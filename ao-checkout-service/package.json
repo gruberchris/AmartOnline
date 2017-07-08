@@ -1,0 +1,11 @@
+{
+  "name": "ao-checkout-service",
+  "version": "1.0.0",
+  "description": "Amart Online Checkout Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Gruber",
+  "license": "ISC"
+}
