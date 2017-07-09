@@ -1,16 +1,16 @@
-import express from 'express';
-import path from 'path';
+const express = require('express');
+const path = require('path');
 
 const app = express();
 
 app.use(express.static(path.join(__dirname)));
 
 app.get('/api/inventory', (req, res) => {
-
+    res.send('TODO');
 });
 
 app.get('/api/inventory/:inventory_id', (req, res) => {
-
+    res.status(404).send('No inventory available for this item');
 });
 
 app.put('/api/inventory/:inventory_id', (req, res) => {
