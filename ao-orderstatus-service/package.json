@@ -11,5 +11,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/gruberchris/AmartOnline"
+  },
+  "dependencies": {
+    "express": "^4.15.3"
   }
 }

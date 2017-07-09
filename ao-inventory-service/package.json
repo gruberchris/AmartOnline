@@ -1,7 +1,7 @@
 {
-  "name": "ao-checkout-service",
+  "name": "ao-inventory-service",
   "version": "1.0.0",
-  "description": "Amart Online Checkout Service",
+  "description": "Amart Online inventory service",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +11,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/gruberchris/AmartOnline"
+  },
+  "dependencies": {
+    "express": "^4.15.3"
   }
 }
