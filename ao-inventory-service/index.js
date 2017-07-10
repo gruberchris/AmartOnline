@@ -63,11 +63,11 @@ app.post('/api/inventory', (req, res) => {
 app.put('/api/inventory/:itemId', (req, res) => {
   let inventoryItem = req.body;
 
-  InventoryItemModel.findOneAndUpdate({itemId: inventoryItem.itemId}, inventoryItem, null, (error, inventoryItem) => {
+  InventoryItemModel.findOneAndUpdate({itemId: inventoryItem.itemId}, inventoryItem, null, (error, doc) => {
     if(error) {
       res.status(500).send(error);
     } else {
-      res.send(inventoryItem);
+      res.send(doc);
     }
   });
 });
