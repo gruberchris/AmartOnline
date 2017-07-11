@@ -7,8 +7,10 @@ const BasketModel = require('./models/basketModel');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname)));
 
-const mongoUrl = 'mongodb://localhost:27017/AmartOnline';
+const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
+const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl);
 
@@ -21,8 +23,6 @@ db.on('error', (error) => {
 db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
 });
-
-app.use(express.static(path.join(__dirname)));
 
 app.get('/api/basket', (req, res) => {
   BasketModel.find((error, baskets) => {

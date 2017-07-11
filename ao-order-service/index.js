@@ -9,7 +9,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
-const mongoUrl = 'mongodb://localhost:27017/AmartOnline';
+const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
+const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl);
 
