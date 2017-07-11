@@ -1,28 +1,86 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const OrderModel = require('./models/orderModel');
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
+const mongoUrl = 'mongodb://localhost:27017/AmartOnline';
+
+mongoose.connect(mongoUrl);
+
+let db = mongoose.connection;
+
+db.on('error', (error) => {
+  console.log(`Error while attempting to connect to mogodb server: ${mongoUrl}. The error message is: ${error}`);
+});
+
+db.once('open', () => {
+  console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
+});
+
 app.get('/api/order', (req, res) => {
-
+  OrderModel.find((error, orders) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      res.send(orders);
+    }
+  });
 });
 
-app.get('/api/order/:order_id', (req, res) => {
+app.get('/api/order/:orderId', (req, res) => {
+  let orderId = req.params.orderId;
 
+  OrderModel.findOne({orderId: orderId}, (error, order) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      if (order) {
+        res.send(order);
+      } else {
+        res.status(404).send('No such order found.');
+      }
+    }
+  });
 });
 
-app.put('/api/order/:order_id', (req, res) => {
-
+app.post('/api/order', (req, res) => {
+  OrderModel.createOrder(req.body, (error, order) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      res.send(order);
+    }
+  });
 });
 
-app.post('/api/order/:order_id', (req, res) => {
+app.put('/api/order/:orderId', (req, res) => {
+  let order = req.body;
 
+  OrderModel.findOneAndUpdate({orderId: order.orderId}, order, null, (error, doc) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      res.send(doc);
+    }
+  });
 });
 
-app.delete('/api/order/:order_id', (req, res) => {
+app.delete('/api/order/:orderId', (req, res) => {
+  let orderId = req.params.orderId;
 
+  OrderModel.findOneAndRemove({orderId: orderId}, (error) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      res.sendStatus(204);
+    }
+  });
 });
 
 const port = process.env.PORT || 5000;
