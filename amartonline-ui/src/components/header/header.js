@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
-class Navbar extends Component {
+class Header extends Component {
   constructor(props) {
     super();
     this.auth = props.auth;
@@ -36,4 +36,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default Header;

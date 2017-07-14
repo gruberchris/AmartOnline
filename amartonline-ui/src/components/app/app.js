@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from '../navbar/navbar';
+import Header from '../header/header';
 import Home from '../home/home';
 import Auth from '../../auth/auth';
 import { Switch, Route } from 'react-router-dom';
@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar auth={auth}/>
+        <Header auth={auth}/>
         <Grid>
           <Row className="show-grid">
             <Col md={10}>
