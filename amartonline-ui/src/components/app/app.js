@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from '../navbar/navbar';
 import Home from '../home/home';
-import Auth from './auth/auth';
+import Auth from '../../auth/auth';
 import { Switch, Route } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-bootstrap';
 
