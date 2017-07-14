@@ -7,4 +7,14 @@ export default class Auth {
   login() {
     this.auth0.authorize();
   }
+
+  onAuthCallback(nextState) {
+    if(/access_token|id_token|error/.test(nextState.location.hash)) {
+      this.handleAuthentication();
+    }
+  }
+
+  handleAuthentication() {
+
+  }
 }
