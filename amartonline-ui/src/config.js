@@ -1,5 +1,5 @@
-export default Object.assign({
-  auth: {
+export const Config = {
+  Auth: {
     domain: '',
     clientID: '',
     redirectUri: 'http://localhost:3000',
@@ -7,4 +7,4 @@ export default Object.assign({
     responseType: 'token id_token',
     scope: 'openid'
   }
-});
+};

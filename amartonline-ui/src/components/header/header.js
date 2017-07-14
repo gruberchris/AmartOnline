@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import UserLogin from '../userLogin/userLogin';
 
 class Header extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.auth = props.auth;
-  }
-
-  login() {
-    this.auth.login();
   }
 
   render() {
@@ -27,7 +24,7 @@ class Header extends Component {
         </Nav>
         <Nav pullRight>
           <NavItem>
-
+            <UserLogin auth={this.auth} />
           </NavItem>
         </Nav>
         </Navbar.Collapse>
