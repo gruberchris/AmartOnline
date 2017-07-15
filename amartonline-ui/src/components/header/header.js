@@ -10,7 +10,7 @@ class Header extends Component {
 
   render() {
     return (
-      <Navbar collapseOnSelect inverse className="navbar-fixed-top">
+      <Navbar collapseOnSelect inverse className="navbar-default">
         <Navbar.Header>
           <Navbar.Brand>
             <a href="/#">AmartOnline</a>
