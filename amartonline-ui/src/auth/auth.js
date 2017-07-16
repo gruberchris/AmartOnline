@@ -17,28 +17,33 @@ export default class Auth {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
+    localStorage.removeItem('AmartOnlineAuthToken');
 
     history.replace('/');
   }
 
   isAuthenticated() {
-    const expires = JSON.parse(localStorage.getItem('expires_at'));
-    const isAuth = new Date().getTime() < expires;
+    const amartOnlineAuthToken = JSON.parse(localStorage.getItem('AmartOnlineAuthToken'));
 
-    return isAuth;
+    if(amartOnlineAuthToken) {
+      return new Date().getTime() < amartOnlineAuthToken.expires;
+    } else {
+      return false;
+    }
   }
 
   setSession(authResult) {
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
 
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
+    const amartOnlineAuthToken = {
+      accessToken: authResult.accessToken,
+      identityToken: authResult.idToken,
+      expires: expiresAt
+    };
 
-    console.debug(`JWT saved: AccessToken = ${authResult.accessToken} IdentityToken = ${authResult.idToken} JWT-Expires = ${expiresAt}`);
+    localStorage.setItem('AmartOnlineAuthToken', JSON.stringify(amartOnlineAuthToken));
+
+    // console.log(`JWT saved: AccessToken = ${authResult.accessToken} IdentityToken = ${authResult.idToken} JWT-Expires = ${expiresAt}`);
 
     history.replace('/');
   }
