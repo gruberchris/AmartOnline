@@ -2,9 +2,14 @@ export const Config = {
   Auth: {
     domain: '',
     clientID: '',
-    redirectUri: 'http://localhost:3000',
+    redirectUri: 'http://localhost:3000/callback',
     audience: '',
     responseType: 'token id_token',
     scope: 'openid'
+  },
+  Api: {
+    inventoryApiUrl: 'http://localhost:5000',
+    basketApiUrl: 'http://localhost:5001',
+    orderUrl: 'http://localhost:5002'
   }
 };

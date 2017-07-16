@@ -6,10 +6,17 @@ const InventoryItemModel = require('./models/inventoryItemModel');
 
 const app = express();
 
+const allowCrossDomain = (request, response, next) => {
+  response.header('Access-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+};
+
+app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
-const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
+const mongoHostName = process.env.MONGO_HOST_NAME || 'nas';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl);

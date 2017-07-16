@@ -19,7 +19,7 @@ export const getRoutes = () => {
         <Route exact path="/checkout" render={(props) => <Checkout {...props}/>} />
         <Route exact path="/profile" render={(props) => <UserProfile {...props}/>} />
         <Route path="/callback" render={(props) => {
-          Auth.onAuthCallback(props);
+          auth.onAuthCallback(props);
           return <Callback {...props} />
         }} />
       </div>

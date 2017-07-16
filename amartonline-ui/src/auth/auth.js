@@ -21,13 +21,14 @@ export default class Auth {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
 
-    history.replace('/home');
+    history.replace('/');
   }
 
   isAuthenticated() {
     const expires = JSON.parse(localStorage.getItem('expires_at'));
+    const isAuth = new Date().getTime() < expires;
 
-    return new Date().getTime() < expires;
+    return isAuth;
   }
 
   setSession(authResult) {
@@ -37,7 +38,9 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
 
-    history.replace('/home');
+    console.debug(`JWT saved: AccessToken = ${authResult.accessToken} IdentityToken = ${authResult.idToken} JWT-Expires = ${expiresAt}`);
+
+    history.replace('/');
   }
 
   onAuthCallback(nextState) {
@@ -50,9 +53,9 @@ export default class Auth {
     this.auth0.parseHash((error, authResult) => {
       if(authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        history.replace('/home');
+        history.replace('/');
       } else if(error) {
-        history.replace('/home');
+        history.replace('/');
         console.error(error);
       }
     });
