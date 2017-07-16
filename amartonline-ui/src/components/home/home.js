@@ -13,14 +13,14 @@ class Home extends Component {
 
   render() {
     const itemsList = this.state.inventory.map((item) =>
-      <li key={item.itemId.toString()}>{item.description}</li>
+      <li className="list-group-item" key={item.itemId.toString()}><h4>{item.description}</h4> Quantity: {item.quantity} Price: ${item.price}</li>
     );
 
     return (
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-10 col-md-offset-1">
-            <ul>{itemsList}</ul>
+            <ul className="list-group">{itemsList}</ul>
           </div>
         </div>
       </div>
