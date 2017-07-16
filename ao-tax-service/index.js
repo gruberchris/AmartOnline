@@ -3,6 +3,13 @@ const path = require('path');
 
 const app = express();
 
+const allowCrossDomain = (request, response, next) => {
+  response.header('Access-Control-Allow-Origin', '*');
+  response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+};
+
+app.use(allowCrossDomain);
 app.use(express.static(path.join(__dirname)));
 
 let stateTaxRates = {};
