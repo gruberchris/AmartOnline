@@ -6,6 +6,7 @@
     "auth0-js": "^8.8.0",
     "axios": "^0.16.2",
     "bootstrap": "^3.3.7",
+    "jwt-decode": "^2.2.0",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.6.1",

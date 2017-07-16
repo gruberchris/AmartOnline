@@ -16,8 +16,20 @@ class Header extends Component {
     this.props.auth.logout();
   }
 
+  get userProfile() {
+    return this.props.auth.userProfile;
+  }
+
   render() {
     const { isAuthenticated } = this.props.auth;
+
+    const tempProfileImageStyle = {
+      maxHeight: '30px',
+      width: 'auto',
+      verticalAlign: 'middle',
+      borderRadius: '3px',
+      marginLeft: '7px'
+    };
 
     return (
       <Navbar collapseOnSelect inverse className="navbar-default">
@@ -34,6 +46,7 @@ class Header extends Component {
         </Nav>
         <Nav pullRight>
           {!isAuthenticated() && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
+          {isAuthenticated() && (<NavItem>{this.props.auth.authToken.name}<img style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" /></NavItem>)}
           {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
         </Nav>
         </Navbar.Collapse>

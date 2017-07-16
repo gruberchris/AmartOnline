@@ -5,7 +5,7 @@ export const Config = {
     redirectUri: 'http://localhost:3000/callback',
     audience: '',
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid profile'
   },
   Api: {
     inventoryApiUrl: 'http://localhost:5000',

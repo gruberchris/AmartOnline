@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js';
 import { Config } from '../config';
 import history from '../history';
+import decode from 'jwt-decode';
 
 export default class Auth {
   auth0 = new auth0.WebAuth(Config.Auth);
@@ -10,6 +11,8 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.getUserProfile = this.getUserProfile.bind(this);
+    this.getAccessToken = this.getAccessToken.bind(this);
   }
 
   login() {
@@ -18,12 +21,11 @@ export default class Auth {
 
   logout() {
     localStorage.removeItem('AmartOnlineAuthToken');
-
     history.replace('/');
   }
 
   isAuthenticated() {
-    const amartOnlineAuthToken = JSON.parse(localStorage.getItem('AmartOnlineAuthToken'));
+    const amartOnlineAuthToken = this.authToken;
 
     if(amartOnlineAuthToken) {
       return new Date().getTime() < amartOnlineAuthToken.expires;
@@ -35,17 +37,18 @@ export default class Auth {
   setSession(authResult) {
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
 
+    const decodedIdentityToken = decode(authResult.idToken);
+
     const amartOnlineAuthToken = {
       accessToken: authResult.accessToken,
       identityToken: authResult.idToken,
-      expires: expiresAt
+      expires: expiresAt,
+      name: decodedIdentityToken.name,
+      pictureUrl: decodedIdentityToken.picture,
+      nickname: decodedIdentityToken.nickname
     };
 
     localStorage.setItem('AmartOnlineAuthToken', JSON.stringify(amartOnlineAuthToken));
-
-    // console.log(`JWT saved: AccessToken = ${authResult.accessToken} IdentityToken = ${authResult.idToken} JWT-Expires = ${expiresAt}`);
-
-    history.replace('/');
   }
 
   onAuthCallback(nextState) {
@@ -58,11 +61,50 @@ export default class Auth {
     this.auth0.parseHash((error, authResult) => {
       if(authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
+
+        /*
+        this.getUserProfile((error, profile) => {
+          console.log(`Error message while retrieving user profile is: ${JSON.parse(error)}`);
+          console.log(`User profile is: ${profile}`);
+        });
+        */
+
         history.replace('/');
       } else if(error) {
         history.replace('/');
         console.error(error);
       }
+    });
+  }
+
+  get authToken() {
+    return JSON.parse(localStorage.getItem('AmartOnlineAuthToken'));
+  }
+
+  getAccessToken() {
+    const authToken = this.authToken;
+
+    if(!authToken || !authToken.accessToken) {
+      throw new Error('Unauthorized or no access token retrieved.');
+    }
+
+    return authToken.accessToken;
+  }
+
+  getUserProfile(callback) {
+    const accessToken = this.getAccessToken();
+
+    console.log(accessToken);
+
+    this.auth0.client.userInfo(accessToken, (error, profile) => {
+      console.log(JSON.stringify(error));
+
+      if(profile) {
+        this.userProfile = profile;
+        console.log(`Saved user profile: ${JSON.stringify(this.userProfile)}`);
+      }
+
+      callback(error, profile);
     });
   }
 }
