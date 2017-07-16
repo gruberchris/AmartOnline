@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import UserLogin from '../userLogin/userLogin';
 
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.auth = props.auth;
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
   }
 
   render() {
+    const { isAuthenticated } = this.props.auth;
+
     return (
       <Navbar collapseOnSelect inverse className="navbar-default">
         <Navbar.Header>
@@ -23,9 +33,8 @@ class Header extends Component {
           <NavItem>Even Better Stuff!</NavItem>
         </Nav>
         <Nav pullRight>
-          <NavItem>
-            <UserLogin auth={this.auth} />
-          </NavItem>
+          {!isAuthenticated() && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
+          {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
         </Nav>
         </Navbar.Collapse>
       </Navbar>

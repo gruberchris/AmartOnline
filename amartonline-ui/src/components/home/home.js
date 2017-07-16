@@ -13,7 +13,9 @@ class Home extends Component {
 
   render() {
     const itemsList = this.state.inventory.map((item) =>
-      <li className="list-group-item" key={item.itemId.toString()}><h4>{item.description}</h4> Quantity: {item.quantity} Price: ${item.price}</li>
+      <li className="list-group-item" key={item.itemId.toString()}>
+        <h4>{item.description}</h4> Quantity: {item.quantity} Price: ${item.price}
+      </li>
     );
 
     return (
