@@ -5,7 +5,7 @@ class App extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header auth={this.props.auth} />
+        <Header auth={this.props.auth} cart={this.props.cart} />
       </div>
     );
   }

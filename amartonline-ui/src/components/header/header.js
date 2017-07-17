@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 class Header extends Component {
   constructor(props) {
@@ -21,6 +22,10 @@ class Header extends Component {
     return this.props.auth.userProfile;
   }
 
+  get cartItemCount() {
+    return this.props.cart.items.length;
+  }
+
   render() {
     const { isAuthenticated } = this.props.auth;
 
@@ -35,7 +40,7 @@ class Header extends Component {
       <Navbar collapseOnSelect inverse className="navbar-default">
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="/">AmartOnline</a>
+            <NavLink to="/">AmartOnline</NavLink>
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
@@ -53,9 +58,11 @@ class Header extends Component {
             <MenuItem divider />
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>)}
-          {isAuthenticated() && (<LinkContainer to="/profile"><NavItem>Hello, {this.props.auth.authToken.name}<Image style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>)}
           {isAuthenticated() && (
-            <LinkContainer to="/checkout"><NavItem><Button><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></Button></NavItem></LinkContainer>
+            <LinkContainer to="/profile"><NavItem>Hello, {this.props.auth.authToken.name}<Image style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
+          )}
+          {isAuthenticated() && (
+            <LinkContainer to="/checkout"><NavItem><Button bsStyle="primary"><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><span className="badge">{this.cartItemCount}</span></Button></NavItem></LinkContainer>
           )}
         </Nav>
         </Navbar.Collapse>

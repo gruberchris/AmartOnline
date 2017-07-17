@@ -9,14 +9,17 @@ import Auth from './auth/auth';
 import history from './history';
 
 const auth = new Auth();
+const shoppingCart = {
+  items: []
+};
 
 export const getRoutes = () => {
   return (
     <BrowserRouter history={history}>
       <div>
-        <Route render={(props) => <App auth={auth} {...props}/>} />
-        <Route exact path="/" render={(props) => <Home {...props}/>} />
-        <Route exact path="/checkout" render={(props) => <Checkout {...props}/>} />
+        <Route render={(props) => <App auth={auth} cart={shoppingCart} {...props}/>} />
+        <Route exact path="/" render={(props) => <Home cart={shoppingCart}  {...props}/>} />
+        <Route exact path="/checkout" render={(props) => <Checkout cart={shoppingCart}  {...props}/>} />
         <Route exact path="/profile" render={(props) => <UserProfile {...props}/>} />
         <Route path="/callback" render={(props) => {
           auth.onAuthCallback(props);

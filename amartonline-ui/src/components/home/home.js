@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Config } from '../../config';
+import { Button, ListGroup, ListGroupItem, Glyphicon, Col, Row, Grid } from 'react-bootstrap';
 
 class Home extends Component {
   constructor(props) {
@@ -12,20 +13,32 @@ class Home extends Component {
   }
 
   render() {
+    const tempButtonContainer = {
+      display: "inline-block",
+      verticalAlign: "middle"
+    };
+
+    const tempButtonContainer2 = {
+      display: "inline-block",
+      verticalAlign: "middle",
+      marginLeft: "50px"
+    };
+
     const itemsList = this.state.inventory.map((item) =>
-      <li className="list-group-item" key={item.itemId.toString()}>
-        <h4>{item.description}</h4> Only {item.quantity} left on hand. This can be yours for the every day low price of only ${item.price}
-      </li>
+      <ListGroupItem key={item.itemId.toString()}>
+        <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
+        <div style={tempButtonContainer2}><Button bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button></div>
+      </ListGroupItem>
     );
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-10 col-md-offset-1">
-            <ul className="list-group">{itemsList}</ul>
-          </div>
-        </div>
-      </div>
+      <Grid fluid={true}>
+        <Row>
+          <Col md={10} mdOffset={1}>
+            <ListGroup>{itemsList}</ListGroup>
+          </Col>
+        </Row>
+      </Grid>
     )
   }
 
