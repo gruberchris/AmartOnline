@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button, Glyphicon, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { NavLink } from 'react-router-dom';
 
@@ -24,6 +24,18 @@ class Header extends Component {
 
   get cartItemCount() {
     return this.props.cart.items.length;
+  }
+
+  get userName() {
+    return this.props.auth.authToken.name;
+  }
+
+  get userPicture() {
+    return this.props.auth.authToken.pictureUrl;
+  }
+
+  get userNickName() {
+    return this.props.auth.authToken.nickname;
   }
 
   render() {
@@ -59,10 +71,10 @@ class Header extends Component {
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>)}
           {isAuthenticated() && (
-            <LinkContainer to="/profile"><NavItem>Hello, {this.props.auth.authToken.name}<Image style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
+            <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
           )}
           {isAuthenticated() && (
-            <LinkContainer to="/checkout"><NavItem><Button bsStyle="primary"><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span><span className="badge">{this.cartItemCount}</span></Button></NavItem></LinkContainer>
+            <LinkContainer to="/checkout"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.cartItemCount}</Badge></Button></NavItem></LinkContainer>
           )}
         </Nav>
         </Navbar.Collapse>
