@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Image, Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap'
 
 class Header extends Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class Header extends Component {
       maxHeight: '30px',
       width: 'auto',
       verticalAlign: 'middle',
-      borderRadius: '3px',
       marginLeft: '7px'
     };
 
@@ -35,19 +35,28 @@ class Header extends Component {
       <Navbar collapseOnSelect inverse className="navbar-default">
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="/#">AmartOnline</a>
+            <a href="/">AmartOnline</a>
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
         <Navbar.Collapse>
-        <Nav>
+          {/*<Nav>
           <NavItem>Great Stuff</NavItem>
           <NavItem>Even Better Stuff!</NavItem>
-        </Nav>
+          {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
+        </Nav>*/}
         <Nav pullRight>
           {!isAuthenticated() && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
-          {isAuthenticated() && (<NavItem>{this.props.auth.authToken.name}<img style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" /></NavItem>)}
-          {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
+          {isAuthenticated() && (
+          <NavDropdown id="navUserDropdown" title="Settings">
+            <LinkContainer to="/profile"><MenuItem>Profile</MenuItem></LinkContainer>
+            <MenuItem divider />
+            <MenuItem onClick={this.logout}>Logout</MenuItem>
+          </NavDropdown>)}
+          {isAuthenticated() && (<LinkContainer to="/profile"><NavItem>Hello, {this.props.auth.authToken.name}<Image style={tempProfileImageStyle} src={this.props.auth.authToken.pictureUrl} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>)}
+          {isAuthenticated() && (
+            <LinkContainer to="/checkout"><NavItem><Button><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></Button></NavItem></LinkContainer>
+          )}
         </Nav>
         </Navbar.Collapse>
       </Navbar>

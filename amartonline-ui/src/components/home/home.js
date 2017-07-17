@@ -14,7 +14,7 @@ class Home extends Component {
   render() {
     const itemsList = this.state.inventory.map((item) =>
       <li className="list-group-item" key={item.itemId.toString()}>
-        <h4>{item.description}</h4> Quantity: {item.quantity} Price: ${item.price}
+        <h4>{item.description}</h4> Only {item.quantity} left on hand. This can be yours for the every day low price of only ${item.price}
       </li>
     );
 
