@@ -74,7 +74,7 @@ class Header extends Component {
             <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
           )}
           {isAuthenticated() && (
-            <LinkContainer to="/checkout"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.cartItemCount}</Badge></Button></NavItem></LinkContainer>
+            <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.cartItemCount}</Badge></Button></NavItem></LinkContainer>
           )}
         </Nav>
         </Navbar.Collapse>

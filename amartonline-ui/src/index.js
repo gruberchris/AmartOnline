@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { Route, BrowserRouter} from 'react-router-dom';
 import App from './components/app/app';
 import Home from './components/home/home';
-import Checkout from './components/checkout/checkout';
+// import Checkout from './components/checkout/checkout';
+import ShoppingCart from './components/shoppingCart/shoppingCart';
 import Callback from './components/callback/callback';
 import UserProfile from './components/userProfile/userProfile';
 import Auth from './auth/auth';
@@ -20,7 +21,7 @@ ReactDOM.render((
     <div>
       <Route render={(props) => <App auth={auth} {...props}/>} />
       <Route exact path="/" render={(props) => <Home {...props}/>} />
-      <Route exact path="/checkout" render={(props) => <Checkout {...props}/>} />
+      <Route exact path="/cart" render={(props) => <ShoppingCart {...props}/>} />
       <Route exact path="/profile" render={(props) => <UserProfile {...props}/>} />
       <Route path="/callback" render={(props) => {
         auth.onAuthCallback(props);
