@@ -27,7 +27,7 @@ class Home extends Component {
     const itemsList = this.state.inventory.map((item) =>
       <ListGroupItem key={item.itemId.toString()}>
         <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
-        <div style={tempButtonContainer2}><Button bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button></div>
+        <div style={tempButtonContainer2}><Button onClick={this.addItemToShoppingCart.bind(this, item)} bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button></div>
       </ListGroupItem>
     );
 
@@ -52,6 +52,10 @@ class Home extends Component {
     }).catch((error) => {
       console.error(error);
     });
+  }
+
+  addItemToShoppingCart(item) {
+    console.log(item.itemId);
   }
 }
 
