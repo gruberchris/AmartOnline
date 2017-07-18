@@ -43,6 +43,14 @@ class Header extends Component {
     this.setState({cartItemCount: oldValue + 1});
   }
 
+  decrementCartItemCount() {
+    const oldValue = this.state.cartItemCount;
+
+    if(oldValue > 0) {
+      this.setState({cartItemCount: oldValue - 1});
+    }
+  }
+
   render() {
     const { isAuthenticated } = this.props.auth;
 

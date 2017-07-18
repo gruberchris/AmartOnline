@@ -55,7 +55,7 @@ class Home extends Component {
   }
 
   addItemToShoppingCart(item) {
-    this.props.onAddItemToCart();
+    this.props.onAddCartItem();
     console.log(item.itemId);
   }
 }

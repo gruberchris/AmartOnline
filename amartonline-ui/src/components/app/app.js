@@ -25,12 +25,12 @@ class App extends Component {
       <Grid fluid={true}>
         <Header auth={auth} ref="header" cartItemCount={this.state.cartItemCount} />
         <Switch>
-          <Route exact path="/" render={(props) => <Home onAddItemToCart={() => {this.refs.header.incrementCartItemCount();}} {...props}/>} />
+          <Route exact path="/" render={(props) => <Home onAddCartItem={() => {this.refs.header.incrementCartItemCount();}} {...props}/>} />
           <Route path="/callback" render={(props) => {
             auth.onAuthCallback(props);
             return <Callback {...props} />
           }} />
-          <Route exact path="/cart" component={ShoppingCart} />
+          <Route exact path="/cart" render={(props) => <ShoppingCart onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
           <Route exact path="/profile" component={UserProfile} />
         </Switch>
       </Grid>
