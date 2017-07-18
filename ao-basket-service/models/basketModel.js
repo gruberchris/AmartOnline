@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const basketModelSchema = new mongoose.Schema({
-  basketId: { type: String, unique: true },
+  userId: { type: String, unique: true},
   items: [{ itemId: String, quantity: Number }]
 });
 

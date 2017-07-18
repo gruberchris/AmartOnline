@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const OrderModelSchema = new mongoose.Schema({
   orderId: { type: String, unique: true },
+  userId: { type: String },
   customerEmail: String,
   itemQuantity: Number,
   total: Number,
