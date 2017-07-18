@@ -12,12 +12,20 @@ import Auth from '../../auth/auth';
 const auth = new Auth();
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      cartItemCount: 0
+    };
+  }
+
   render() {
     return (
       <Grid fluid={true}>
-        <Header auth={auth} />
+        <Header auth={auth} ref="header" cartItemCount={this.state.cartItemCount} />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" render={(props) => <Home onAddItemToCart={() => {this.refs.header.incrementCartItemCount();}} {...props}/>} />
           <Route path="/callback" render={(props) => {
             auth.onAuthCallback(props);
             return <Callback {...props} />

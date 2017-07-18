@@ -8,6 +8,10 @@ class Header extends Component {
     super(props);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+
+    this.state = {
+      cartItemCount: props.cartItemCount
+    };
   }
 
   login() {
@@ -22,10 +26,6 @@ class Header extends Component {
     return this.props.auth.userProfile;
   }
 
-  get cartItemCount() {
-    return 0;
-  }
-
   get userName() {
     return this.props.auth.authToken.name;
   }
@@ -36,6 +36,11 @@ class Header extends Component {
 
   get userNickName() {
     return this.props.auth.authToken.nickname;
+  }
+
+  incrementCartItemCount() {
+    const oldValue = this.state.cartItemCount;
+    this.setState({cartItemCount: oldValue + 1});
   }
 
   render() {
@@ -74,7 +79,7 @@ class Header extends Component {
             <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
           )}
           {isAuthenticated() && (
-            <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.cartItemCount}</Badge></Button></NavItem></LinkContainer>
+            <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.state.cartItemCount}</Badge></Button></NavItem></LinkContainer>
           )}
         </Nav>
         </Navbar.Collapse>
