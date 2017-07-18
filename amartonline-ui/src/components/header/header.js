@@ -23,7 +23,7 @@ class Header extends Component {
   }
 
   get cartItemCount() {
-    return this.props.cart.items.length;
+    return 0;
   }
 
   get userName() {
