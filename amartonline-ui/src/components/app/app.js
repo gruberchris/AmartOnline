@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid } from 'react-bootstrap';
 import { Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../header/header';
 import Home from '../home/home';
 // import Checkout from '../checkout/checkout';
@@ -8,6 +9,7 @@ import ShoppingCart from '../shoppingCart/shoppingCart';
 import Callback from '../callback/callback';
 import UserProfile from '../userProfile/userProfile';
 import Auth from '../../auth/auth';
+import {Config} from "../../config";
 
 const auth = new Auth();
 
@@ -15,6 +17,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    this.axios = axios;
     this.state = {
       cartItemCount: 0
     };
@@ -35,6 +38,30 @@ class App extends Component {
         </Switch>
       </Grid>
     );
+  }
+
+  componentWillMount() {
+    if(!this.state.shoppingCart && auth.authToken) {
+      const userId = auth.authToken.userId;
+
+      this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
+        const existingBasket = response.data;
+
+        if(!existingBasket) {
+          this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { userId: userId, items: []}).then((postResponse) => {
+            this.setState({shoppingCart: postResponse.data});
+            console.log(`Shopping cart created: ${postResponse.data}`);
+          }).catch((error) => {
+            console.error(error);
+          });
+        } else {
+          this.setState({shoppingCart: existingBasket});
+          console.log(`Existing cart retrieved: ${existingBasket}`);
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
   }
 }
 

@@ -54,7 +54,10 @@ class Home extends Component {
     });
   }
 
+
   addItemToShoppingCart(item) {
+
+
     this.props.onAddCartItem();
     console.log(item.itemId);
   }

@@ -41,10 +41,10 @@ app.get('/api/basket', (req, res) => {
   });
 });
 
-app.get('/api/basket/:basketId', (req, res) => {
-  let basketId = req.params.basketId;
+app.get('/api/basket/:userId', (req, res) => {
+  let userId = req.params.userId;
 
-  BasketModel.findOne({basketId: basketId}, (error, basket) => {
+  BasketModel.findOne({userId: userId}, (error, basket) => {
     if(error) {
       res.status(500).send(error);
     } else {
@@ -67,10 +67,10 @@ app.post('/api/basket', (req, res) => {
   });
 });
 
-app.put('/api/basket/:basketId', (req, res) => {
+app.put('/api/basket/:userId', (req, res) => {
   let basket = req.body;
 
-  BasketModel.findOneAndUpdate({basketId: basket.basketId}, basket, null, (error, doc) => {
+  BasketModel.findOneAndUpdate({userId: basket.userId}, basket, null, (error, doc) => {
     if(error) {
       res.status(500).send(error);
     } else {
@@ -79,10 +79,10 @@ app.put('/api/basket/:basketId', (req, res) => {
   });
 });
 
-app.delete('/api/basket/:basketId', (req, res) => {
-  let basketId = req.params.basketId;
+app.delete('/api/basket/:userId', (req, res) => {
+  let userId = req.params.userId;
 
-  BasketModel.findOneAndRemove({basketId: basketId}, (error) => {
+  BasketModel.findOneAndRemove({userId: userId}, (error) => {
     if(error) {
       res.status(500).send(error);
     } else {
@@ -91,7 +91,7 @@ app.delete('/api/basket/:basketId', (req, res) => {
   });
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.listen(port);
 

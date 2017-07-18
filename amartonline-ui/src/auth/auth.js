@@ -45,7 +45,8 @@ export default class Auth {
       expires: expiresAt,
       name: decodedIdentityToken.name,
       pictureUrl: decodedIdentityToken.picture,
-      nickname: decodedIdentityToken.nickname
+      nickname: decodedIdentityToken.nickname,
+      userId: decodedIdentityToken.sub
     };
 
     localStorage.setItem('AmartOnlineAuthToken', JSON.stringify(amartOnlineAuthToken));

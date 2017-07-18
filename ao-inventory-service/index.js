@@ -16,7 +16,7 @@ app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname)));
 
-const mongoHostName = process.env.MONGO_HOST_NAME || 'nas';
+const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl);
