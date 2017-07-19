@@ -34,8 +34,8 @@ class App extends Component {
             return <Callback {...props} />
           }} />
           <Route exact path="/cart" render={(props) => <ShoppingCart auth={auth} onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
-          <Route exact path="/orders" component={Orders} />
-          <Route exact path="/profile" component={UserProfile} />
+          <Route exact path="/orders" render={(props) => <Orders auth={auth} {...props}/>} />
+          <Route exact path="/profile" render={(props) => <UserProfile auth={auth} {...props}/>} />
         </Switch>
       </Grid>
     );

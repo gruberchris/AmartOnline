@@ -10,6 +10,6 @@ export const Config = {
   Api: {
     inventoryApiUrl: 'http://localhost:5000',
     basketApiUrl: 'http://localhost:5001',
-    orderUrl: 'http://localhost:5002'
+    orderApiUrl: 'http://localhost:5002'
   }
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Config } from '../../config';
 import { Button, ListGroup, ListGroupItem, Glyphicon, Col, Row, Grid } from 'react-bootstrap';
+import history from '../../history';
 
 class ShoppingCart extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class ShoppingCart extends Component {
     this.axios = axios;
     this.state = {
       cartItems:[]
-    }
+    };
   }
 
   render() {
@@ -21,6 +22,11 @@ class ShoppingCart extends Component {
           <Col md={10} mdOffset={1}>
             <h1>Shopping Cart:</h1>
             <ListGroup>{cartItemsList}</ListGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={10} mdOffset={1}>
+            <div><Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button></div>
           </Col>
         </Row>
       </Grid>
@@ -52,12 +58,6 @@ class ShoppingCart extends Component {
         verticalAlign: "middle"
       };
 
-      const tempButtonContainer2 = {
-        display: "inline-block",
-        verticalAlign: "middle",
-        marginLeft: "50px"
-      };
-
       const cartItemsList = this.state.cartItems.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
           <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantityOrdered}</span><span><strong>${item.pricePerUnit}</strong></span></div>
@@ -68,6 +68,21 @@ class ShoppingCart extends Component {
     }
 
     return null;
+  }
+
+  saveOrder() {
+    // TODO: Save Order
+
+    // No point as updated cart state happens after redirect back to home
+    //this.state.cartItems.forEach((item) => {
+    //  this.props.onRemoveCartItem();
+    //});
+
+    // TODO: Empty user basket from API
+
+    this.setState({cartItems: []});
+
+    history.replace('/');
   }
 }
 
