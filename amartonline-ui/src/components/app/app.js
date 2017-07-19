@@ -9,7 +9,7 @@ import ShoppingCart from '../shoppingCart/shoppingCart';
 import Callback from '../callback/callback';
 import UserProfile from '../userProfile/userProfile';
 import Auth from '../../auth/auth';
-import {Config} from "../../config";
+import { Config } from "../../config";
 
 const auth = new Auth();
 
@@ -52,21 +52,21 @@ class App extends Component {
       this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
         const existingBasket = response.data;
 
-        if(!existingBasket) {
+        this.setState({cartItemCount: existingBasket.items.length});
+
+        if(existingBasket.items.length > 0) {
+          this.refs.header.incrementCartItemCount();
+        }
+      }).catch((error) => {
+        if(error.response.status === 404) {
           this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { userId: userId, items: []}).then((postResponse) => {
             this.setState({cartItemCount: 0});
           }).catch((error) => {
             console.error(error);
           });
         } else {
-          this.setState({cartItemCount: existingBasket.items.length});
-
-          if(existingBasket.items.length > 0) {
-            this.refs.header.incrementCartItemCount();
-          }
+          console.error(error);
         }
-      }).catch((error) => {
-        console.error(error);
       });
     }
   }

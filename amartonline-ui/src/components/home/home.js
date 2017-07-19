@@ -39,8 +39,26 @@ class Home extends Component {
   }
 
   addItemToShoppingCart(item) {
-    this.props.onAddCartItem();
-    console.log(item.itemId);
+    const userId = this.props.auth.authToken.userId;
+    const quantityOrdering = 1;
+
+    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
+      const basket = response.data;
+
+      // TODO: if item is already in cart, increment its quantity then update
+
+      let newOrderItem = { itemId: item.itemId, description: item.description, quantityOrdered: quantityOrdering, pricePerUnit: item.price };
+
+      console.log(JSON.stringify(newOrderItem));
+
+      basket.items.push(newOrderItem);
+
+      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket).then((postResponse) => {
+        this.props.onAddCartItem();
+      }).catch((error) => {
+        console.error(error);
+      });
+    });
   }
 
   getInventoryItemsList() {

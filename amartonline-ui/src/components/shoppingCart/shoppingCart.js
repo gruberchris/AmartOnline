@@ -39,7 +39,7 @@ class ShoppingCart extends Component {
     }
 
     this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
-      this.setState({cartItems: response.data});
+      this.setState({cartItems: response.data.items});
     }).catch((error) => {
       console.error(error);
     });
@@ -60,7 +60,7 @@ class ShoppingCart extends Component {
 
       const cartItemsList = this.state.cartItems.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
-          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantity}</span><span><strong>${item.price}</strong></span></div>
+          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantityOrdered}</span><span><strong>${item.pricePerUnit}</strong></span></div>
         </ListGroupItem>
       );
 
