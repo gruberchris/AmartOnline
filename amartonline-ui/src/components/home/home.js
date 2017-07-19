@@ -13,23 +13,7 @@ class Home extends Component {
   }
 
   render() {
-    const tempButtonContainer = {
-      display: "inline-block",
-      verticalAlign: "middle"
-    };
-
-    const tempButtonContainer2 = {
-      display: "inline-block",
-      verticalAlign: "middle",
-      marginLeft: "50px"
-    };
-
-    const itemsList = this.state.inventory.map((item) =>
-      <ListGroupItem key={item.itemId.toString()}>
-        <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
-        <div style={tempButtonContainer2}><Button onClick={this.addItemToShoppingCart.bind(this, item)} bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button></div>
-      </ListGroupItem>
-    );
+    const itemsList = this.getInventoryItemsList();
 
     return (
       <Grid fluid={true}>
@@ -54,12 +38,39 @@ class Home extends Component {
     });
   }
 
-
   addItemToShoppingCart(item) {
-
-
     this.props.onAddCartItem();
     console.log(item.itemId);
+  }
+
+  getInventoryItemsList() {
+    if(this.state.inventory.length > 0) {
+      const tempButtonContainer = {
+        display: "inline-block",
+        verticalAlign: "middle"
+      };
+
+      const tempButtonContainer2 = {
+        display: "inline-block",
+        verticalAlign: "middle",
+        marginLeft: "50px"
+      };
+
+      const itemsList = this.state.inventory.map((item) =>
+        <ListGroupItem key={item.itemId.toString()}>
+          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
+          <div style={tempButtonContainer2}>
+            {this.props.auth.authToken &&
+            <Button onClick={this.addItemToShoppingCart.bind(this, item)} bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button>
+            }
+          </div>
+        </ListGroupItem>
+      );
+
+      return itemsList;
+    }
+
+    return null;
   }
 }
 

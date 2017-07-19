@@ -28,12 +28,12 @@ class App extends Component {
       <Grid fluid={true}>
         <Header auth={auth} ref="header" cartItemCount={this.state.cartItemCount} />
         <Switch>
-          <Route exact path="/" render={(props) => <Home onAddCartItem={() => {this.refs.header.incrementCartItemCount();}} {...props}/>} />
+          <Route exact path="/" render={(props) => <Home auth={auth} onAddCartItem={() => {this.refs.header.incrementCartItemCount();}} {...props}/>} />
           <Route path="/callback" render={(props) => {
             auth.onAuthCallback(props);
             return <Callback {...props} />
           }} />
-          <Route exact path="/cart" render={(props) => <ShoppingCart onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
+          <Route exact path="/cart" render={(props) => <ShoppingCart auth={auth} onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
           <Route exact path="/profile" component={UserProfile} />
         </Switch>
       </Grid>
@@ -41,6 +41,10 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.getUserBasketOrCreate();
+  }
+
+  getUserBasketOrCreate() {
     if(!this.state.shoppingCart && auth.authToken) {
       const userId = auth.authToken.userId;
 
@@ -49,14 +53,16 @@ class App extends Component {
 
         if(!existingBasket) {
           this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { userId: userId, items: []}).then((postResponse) => {
-            this.setState({shoppingCart: postResponse.data});
-            console.log(`Shopping cart created: ${postResponse.data}`);
+            this.setState({cartItemCount: 0});
           }).catch((error) => {
             console.error(error);
           });
         } else {
-          this.setState({shoppingCart: existingBasket});
-          console.log(`Existing cart retrieved: ${existingBasket}`);
+          this.setState({cartItemCount: existingBasket.items.length});
+
+          if(existingBasket.items.length > 0) {
+            this.refs.header.incrementCartItemCount();
+          }
         }
       }).catch((error) => {
         console.error(error);
