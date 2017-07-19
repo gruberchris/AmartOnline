@@ -54,7 +54,7 @@ class App extends Component {
 
         this.setState({cartItemCount: existingBasket.items.length});
 
-        if(existingBasket.items.length > 0) {
+        for(let count = 0; count < existingBasket.items.length; count++) {
           this.refs.header.incrementCartItemCount();
         }
       }).catch((error) => {
