@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../header/header';
 import Home from '../home/home';
-// import Checkout from '../checkout/checkout';
+import Orders from '../orders/orders';
 import ShoppingCart from '../shoppingCart/shoppingCart';
 import Callback from '../callback/callback';
 import UserProfile from '../userProfile/userProfile';
@@ -34,6 +34,7 @@ class App extends Component {
             return <Callback {...props} />
           }} />
           <Route exact path="/cart" render={(props) => <ShoppingCart auth={auth} onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
+          <Route exact path="/orders" component={Orders} />
           <Route exact path="/profile" component={UserProfile} />
         </Switch>
       </Grid>

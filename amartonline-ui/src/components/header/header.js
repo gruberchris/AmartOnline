@@ -80,6 +80,7 @@ class Header extends Component {
           {isAuthenticated() && (
           <NavDropdown id="navUserDropdown" title="Settings">
             <LinkContainer to="/profile"><MenuItem>Profile</MenuItem></LinkContainer>
+            <LinkContainer to="/orders"><MenuItem>Orders</MenuItem></LinkContainer>
             <MenuItem divider />
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>)}
