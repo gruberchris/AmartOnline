@@ -2,20 +2,13 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const BasketModel = require('./models/basketModel');
 
 const app = express();
 
-const allowCrossDomain = (request, response, next) => {
-  response.header('Access-Control-Allow-Origin', '*');
-  response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Put');
-  response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
-};
-
-app.use(allowCrossDomain);
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname)));
+app.use(cors());
 
 const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
