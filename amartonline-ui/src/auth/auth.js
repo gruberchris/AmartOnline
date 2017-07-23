@@ -59,7 +59,7 @@ export default class Auth {
   }
 
   handleAuthentication() {
-    this.auth0.parseHash((error, authResult) => {
+    this.auth0.parseHash(window.location.hash, (error, authResult) => {
       if(authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
 
