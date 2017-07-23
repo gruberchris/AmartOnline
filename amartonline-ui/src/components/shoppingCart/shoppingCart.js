@@ -14,6 +14,12 @@ class ShoppingCart extends Component {
   }
 
   render() {
+    this.props.auth.requireAuth();
+
+    if(!this.props.auth.isAuthenticated()) {
+      return null;
+    }
+
     const cartItemsList = this.getCartItemsList();
 
     return (
@@ -26,7 +32,8 @@ class ShoppingCart extends Component {
         </Row>
         <Row>
           <Col md={10} mdOffset={1}>
-            <div><Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button></div>
+            <div><Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button>
+            </div>
           </Col>
         </Row>
       </Grid>

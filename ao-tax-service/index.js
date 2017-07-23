@@ -1,6 +1,8 @@
 const express  = require('express');
 const path = require('path');
 const cors = require('cors');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
 const { Config } = require('./config');
 
 const app = express();
@@ -14,6 +16,19 @@ stateTaxRates["IL"] = {state: "IL", rate: 6.0};
 stateTaxRates["MI"] = {state: "MI", rate: 3.0};
 stateTaxRates["MN"] = {state: "MN", rate: 7.5};
 stateTaxRates["WI"] = {state: "WI", rate: 4.25};
+
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
+  }),
+  // This is the identifier we set when we created the API
+  audience: Config.Auth.audience,
+  issuer: Config.Auth.domain,
+  algorithms: ['RS256']
+});
 
 app.get('/api/tax', (req, res) => {
   res.send(stateTaxRates);

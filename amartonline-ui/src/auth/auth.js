@@ -108,4 +108,11 @@ export default class Auth {
       callback(error, profile);
     });
   }
+
+  requireAuth() {
+    const isLoggedIn = this.isAuthenticated();
+    if(!isLoggedIn) {
+      history.replace('/');
+    }
+  }
 }

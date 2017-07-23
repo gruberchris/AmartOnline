@@ -3,6 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
 const OrderModel = require('./models/orderModel');
 const { Config } = require('./config');
 
@@ -25,6 +27,19 @@ db.on('error', (error) => {
 
 db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
+});
+
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
+  }),
+  // This is the identifier we set when we created the API
+  audience: Config.Auth.audience,
+  issuer: Config.Auth.domain,
+  algorithms: ['RS256']
 });
 
 app.get('/api/order', (req, res) => {

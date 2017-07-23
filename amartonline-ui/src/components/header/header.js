@@ -52,7 +52,7 @@ class Header extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.auth;
+    const isAuthenticated  = this.props.auth.isAuthenticated();
 
     const tempProfileImageStyle = {
       maxHeight: '30px',
@@ -76,18 +76,18 @@ class Header extends Component {
           {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
         </Nav>*/}
         <Nav pullRight>
-          {!isAuthenticated() && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
-          {isAuthenticated() && (
+          {!isAuthenticated && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
+          {isAuthenticated && (
           <NavDropdown id="navUserDropdown" title="Settings">
             <LinkContainer to="/profile"><MenuItem>Profile</MenuItem></LinkContainer>
             <LinkContainer to="/orders"><MenuItem>Orders</MenuItem></LinkContainer>
             <MenuItem divider />
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>)}
-          {isAuthenticated() && (
+          {isAuthenticated && (
             <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
           )}
-          {isAuthenticated() && (
+          {isAuthenticated && (
             <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.state.cartItemCount}</Badge></Button></NavItem></LinkContainer>
           )}
         </Nav>
