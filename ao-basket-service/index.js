@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const BasketModel = require('./models/basketModel');
+const { Config } = require('./config');
 
 const app = express();
 
