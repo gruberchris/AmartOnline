@@ -49,7 +49,7 @@ class App extends Component {
     if(!this.state.shoppingCart && auth.authToken) {
       const userId = auth.authToken.userId;
 
-      this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
+      this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((response) => {
         const existingBasket = response.data;
 
         this.setState({cartItemCount: existingBasket.items.length});
@@ -59,7 +59,7 @@ class App extends Component {
         }
       }).catch((error) => {
         if(error.response.status === 404) {
-          this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { userId: userId, items: []}).then((postResponse) => {
+          this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { data: { userId: userId, items: []}}, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((postResponse) => {
             this.setState({cartItemCount: 0});
           }).catch((error) => {
             console.error(error);

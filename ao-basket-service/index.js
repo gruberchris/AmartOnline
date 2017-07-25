@@ -9,10 +9,22 @@ const BasketModel = require('./models/basketModel');
 const { Config } = require('./config');
 
 const app = express();
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
+  }),
+  audience: Config.Auth.audience,
+  issuer: `https://${Config.Auth.domain}/`,
+  algorithms: ['RS256']
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(authCheck);
 
 const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
@@ -27,19 +39,6 @@ db.on('error', (error) => {
 
 db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
-});
-
-const authCheck = jwt({
-  secret: jwks.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
-  }),
-  // This is the identifier we set when we created the API
-  audience: Config.Auth.audience,
-  issuer: Config.Auth.domain,
-  algorithms: ['RS256']
 });
 
 app.get('/api/basket', (req, res) => {

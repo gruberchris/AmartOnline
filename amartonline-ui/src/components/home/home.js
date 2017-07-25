@@ -42,7 +42,7 @@ class Home extends Component {
     const userId = this.props.auth.authToken.userId;
     const quantityOrdering = 1;
 
-    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
+    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
       const basket = response.data;
 
       // TODO: if item is already in cart, increment its quantity then update
@@ -53,7 +53,7 @@ class Home extends Component {
 
       basket.items.push(newOrderItem);
 
-      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket).then((postResponse) => {
+      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
         this.props.onAddCartItem();
       }).catch((error) => {
         console.error(error);

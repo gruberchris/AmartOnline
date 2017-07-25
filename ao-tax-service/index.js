@@ -24,11 +24,12 @@ const authCheck = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
   }),
-  // This is the identifier we set when we created the API
   audience: Config.Auth.audience,
   issuer: Config.Auth.domain,
   algorithms: ['RS256']
 });
+
+app.use(authCheck);
 
 app.get('/api/tax', (req, res) => {
   res.send(stateTaxRates);
@@ -46,7 +47,7 @@ app.get('/api/tax/:state', (req, res) => {
   }
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5003;
 
 app.listen(port);
 

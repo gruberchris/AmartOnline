@@ -51,7 +51,7 @@ class ShoppingCart extends Component {
       throw new Error('Unauthorized or no access token retrieved.');
     }
 
-    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`).then((response) => {
+    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
       this.setState({cartItems: response.data.items});
     }).catch((error) => {
       console.error(error);
