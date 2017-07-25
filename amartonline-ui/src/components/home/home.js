@@ -47,7 +47,7 @@ class Home extends Component {
 
       // TODO: if item is already in cart, increment its quantity then update
 
-      let newOrderItem = { itemId: item.itemId, description: item.description, quantityOrdered: quantityOrdering, pricePerUnit: item.price };
+      let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
 
       console.log(JSON.stringify(newOrderItem));
 

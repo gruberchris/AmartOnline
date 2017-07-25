@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const basketModelSchema = new mongoose.Schema({
   userId: { type: String, unique: true},
-  items: [{ itemId: String, quantityOrdered: Number, pricePerUnit: Number, description: String }]
+  items: [{ itemId: String, quantity: Number, price: Number, description: String, tax: Number }]
 });
 
 basketModelSchema.statics.createBasket = (basket, callback) => {

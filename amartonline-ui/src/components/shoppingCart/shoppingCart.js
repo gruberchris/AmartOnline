@@ -9,7 +9,7 @@ class ShoppingCart extends Component {
     super(props);
     this.axios = axios;
     this.state = {
-      cartItems:[]
+      basket:{}
     };
   }
 
@@ -32,7 +32,8 @@ class ShoppingCart extends Component {
         </Row>
         <Row>
           <Col md={10} mdOffset={1}>
-            <div><Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button>
+            <div>
+              <Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button>
             </div>
           </Col>
         </Row>
@@ -52,22 +53,22 @@ class ShoppingCart extends Component {
     }
 
     this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
-      this.setState({cartItems: response.data.items});
+      this.setState({basket: response.data});
     }).catch((error) => {
       console.error(error);
     });
   }
 
   getCartItemsList() {
-    if(this.state.cartItems.length > 0) {
+    if(this.state.basket.items.length > 0) {
       const tempButtonContainer = {
         display: "inline-block",
         verticalAlign: "middle"
       };
 
-      const cartItemsList = this.state.cartItems.map((item) =>
+      const cartItemsList = this.state.basket.items.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
-          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantityOrdered}</span><span><strong>${item.pricePerUnit}</strong></span></div>
+          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantity}</span><span><strong>${item.price}</strong></span></div>
         </ListGroupItem>
       );
 
@@ -78,18 +79,26 @@ class ShoppingCart extends Component {
   }
 
   saveOrder() {
-    // TODO: Save Order
+    const authToken = this.props.auth.authToken;
 
-    // No point as updated cart state happens after redirect back to home
-    //this.state.cartItems.forEach((item) => {
-    //  this.props.onRemoveCartItem();
-    //});
+    let order = {
+      userId: authToken.userId,
+      customerEmail: authToken.name,
+      orderItems: this.state.cartItems
+    };
 
-    // TODO: Empty user basket from API
-
-    this.setState({cartItems: []});
-
-    history.replace('/');
+    this.axios.post(`${Config.Api.orderApiUrl}/api/order`, order, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((postResponse) => {
+      let basket = this.state.basket;
+      basket.items = [];
+      this.setState({basket: basket});
+      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${authToken.userId}`, this.state.basket , { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
+        history.replace('/');
+      }).catch((error) => {
+        console.error(error);
+      });
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 }
 

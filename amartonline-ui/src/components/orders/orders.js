@@ -36,12 +36,13 @@ class Orders extends Component {
 
   getOrders() {
     const userId = this.props.auth.authToken.userId;
+    const authToken = this.props.auth.authToken;
 
     if(!userId) {
       throw new Error('Unauthorized or no access token retrieved.');
     }
 
-    this.axios.get(`${Config.Api.orderApiUrl}/api/order/${userId}`).then((response) => {
+    this.axios.get(`${Config.Api.orderApiUrl}/api/order/user/${userId}`, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
       this.setState({orders: response.data});
     }).catch((error) => {
       console.error(error);
@@ -69,13 +70,12 @@ class Orders extends Component {
     };
 
     return (
-      <ListGroupItem key={orderItems.itemId.toString()}>
+      <ListGroupItem key={orderItems.itemId}>
         <div style={tempButtonContainer}>
           <span><strong>{orderItems.description}</strong></span>
           <span><strong>{orderItems.quantity}</strong></span>
           <span><strong>${orderItems.price}</strong></span>
           <span><strong>${orderItems.tax}</strong></span>
-          <span><strong>${orderItems.total}</strong></span>
         </div>
       </ListGroupItem>
     )

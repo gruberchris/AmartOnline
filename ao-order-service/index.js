@@ -17,7 +17,7 @@ const authCheck = jwt({
     jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
   }),
   audience: Config.Auth.audience,
-  issuer: Config.Auth.domain,
+  issuer: `https://${Config.Auth.domain}/`,
   algorithms: ['RS256']
 });
 
@@ -51,6 +51,18 @@ app.get('/api/order', (req, res) => {
   });
 });
 
+app.get('/api/order/user/:userId', (req, res) => {
+  let userId = req.params.userId;
+
+  OrderModel.find({userId: userId}, (error, orders) => {
+    if(error) {
+      res.status(500).send(error);
+    } else {
+      res.send(orders);
+    }
+  });
+});
+
 app.get('/api/order/:orderId', (req, res) => {
   let orderId = req.params.orderId;
 
@@ -68,7 +80,21 @@ app.get('/api/order/:orderId', (req, res) => {
 });
 
 app.post('/api/order', (req, res) => {
-  OrderModel.createOrder(req.body, (error, order) => {
+  let order = req.body;
+  order.orderId = new Date().getTime();
+  order.itemQuantity = order.orderItems.length;
+  order.subtotal = 0;
+  order.totalTax = 0;
+
+  order.items.forEach((item) => {
+    order.subtotal += item.price;
+  });
+
+  // TODO: Call Tax API for taxrate
+
+  order.total = order.subtotal + order.totalTax;
+
+  OrderModel.createOrder(order, (error, order) => {
     if(error) {
       res.status(500).send(error);
     } else {
@@ -101,7 +127,7 @@ app.delete('/api/order/:orderId', (req, res) => {
   });
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5002;
 
 app.listen(port);
 

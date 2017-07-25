@@ -8,7 +8,7 @@ const OrderModelSchema = new mongoose.Schema({
   total: Number,
   subtotal: Number,
   totalTax: Number,
-  orderItems: [{itemId: String, description: String, quantity: Number, price: Number, tax: Number, total: Number}]
+  orderItems: [{itemId: String, description: String, quantity: Number, price: Number, tax: Number}]
 });
 
 OrderModelSchema.statics.createOrder = (payload, callback) => {

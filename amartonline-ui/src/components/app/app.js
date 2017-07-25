@@ -59,7 +59,7 @@ class App extends Component {
         }
       }).catch((error) => {
         if(error.response.status === 404) {
-          this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { data: { userId: userId, items: []}}, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((postResponse) => {
+          this.axios.post(`${Config.Api.basketApiUrl}/api/basket`, { userId: userId, items: []}, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((postResponse) => {
             this.setState({cartItemCount: 0});
           }).catch((error) => {
             console.error(error);

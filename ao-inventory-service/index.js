@@ -17,7 +17,7 @@ const authCheck = jwt({
     jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
   }),
   audience: Config.Auth.audience,
-  issuer: Config.Auth.domain,
+  issuer: `https://${Config.Auth.domain}/`,
   algorithms: ['RS256']
 }).unless((request) => {
   // console.log(`Checking unless rules. Request path is: ${request.path} and method is ${request.method}`);
