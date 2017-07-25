@@ -8,9 +8,7 @@ class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.axios = axios;
-    this.state = {
-      basket:{}
-    };
+    this.state = { basket:{ items: [] } };
   }
 
   render() {
@@ -30,13 +28,15 @@ class ShoppingCart extends Component {
             <ListGroup>{cartItemsList}</ListGroup>
           </Col>
         </Row>
-        <Row>
-          <Col md={10} mdOffset={1}>
-            <div>
-              <Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button>
-            </div>
-          </Col>
-        </Row>
+        { this.state.basket.items.length > 0 &&
+          <Row>
+            <Col md={10} mdOffset={1}>
+              <div>
+                <Button onClick={this.saveOrder.bind(this)} bsStyle="primary" bsSize="large">Place Order</Button>
+              </div>
+            </Col>
+          </Row>
+        }
       </Grid>
     );
   }
