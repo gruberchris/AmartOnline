@@ -87,8 +87,11 @@ class Header extends Component {
           {isAuthenticated && (
             <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
           )}
-          {isAuthenticated && (
+          {(isAuthenticated && this.state.cartItemCount > 0) && (
             <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.state.cartItemCount}</Badge></Button></NavItem></LinkContainer>
+          )}
+          {(isAuthenticated && this.state.cartItemCount === 0) && (
+            <NavItem><Button bsStyle="primary" disabled={true}><Glyphicon glyph="shopping-cart"/><Badge>{this.state.cartItemCount}</Badge></Button></NavItem>
           )}
         </Nav>
         </Navbar.Collapse>
