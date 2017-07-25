@@ -46,7 +46,7 @@ class App extends Component {
   }
 
   getUserBasketOrCreate() {
-    if(!this.state.shoppingCart && auth.authToken) {
+    if(!this.state.shoppingCart && auth.isAuthenticated()) {
       const userId = auth.authToken.userId;
 
       this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((response) => {

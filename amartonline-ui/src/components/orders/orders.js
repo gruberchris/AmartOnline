@@ -35,14 +35,9 @@ class Orders extends Component {
   }
 
   getOrders() {
-    const userId = this.props.auth.authToken.userId;
     const authToken = this.props.auth.authToken;
 
-    if(!userId) {
-      throw new Error('Unauthorized or no access token retrieved.');
-    }
-
-    this.axios.get(`${Config.Api.orderApiUrl}/api/order/user/${userId}`, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
+    this.axios.get(`${Config.Api.orderApiUrl}/api/order/user/${authToken.userId}`, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
       this.setState({orders: response.data});
     }).catch((error) => {
       console.error(error);

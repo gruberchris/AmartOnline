@@ -86,7 +86,7 @@ app.post('/api/order', (req, res) => {
   order.subtotal = 0;
   order.totalTax = 0;
 
-  order.items.forEach((item) => {
+  order.orderItems.forEach((item) => {
     order.subtotal += item.price;
   });
 

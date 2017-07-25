@@ -8,7 +8,10 @@ class Home extends Component {
     super(props);
     this.axios = axios;
     this.state = {
-      inventory:[]
+      inventory:[],
+      basket: {},
+      isAuthenticated: this.props.auth.isAuthenticated(),
+      userId: this.props.auth.authToken.userId
     }
   }
 
@@ -28,6 +31,10 @@ class Home extends Component {
 
   componentWillMount() {
     this.getItemsForSale();
+
+    if(this.state.isAuthenticated) {
+      this.getUserBasket(this.state.userId);
+    }
   }
 
   getItemsForSale() {
@@ -38,26 +45,32 @@ class Home extends Component {
     });
   }
 
+  getUserBasket(userId) {
+    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
+      this.setState({basket: response.data});
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   addItemToShoppingCart(item) {
-    const userId = this.props.auth.authToken.userId;
+    const userId = this.state.userId;
     const quantityOrdering = 1;
 
-    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
-      const basket = response.data;
+    let basket = this.state.basket;
 
-      // TODO: if item is already in cart, increment its quantity then update
+    // TODO: if item is already in cart, increment its quantity then update
 
-      let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
+    let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
 
-      console.log(JSON.stringify(newOrderItem));
+    basket.items.push(newOrderItem);
 
-      basket.items.push(newOrderItem);
+    this.setState({basket: basket});
 
-      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
-        this.props.onAddCartItem();
-      }).catch((error) => {
-        console.error(error);
-      });
+    this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
+      this.props.onAddCartItem();
+    }).catch((error) => {
+      console.error(error);
     });
   }
 

@@ -84,13 +84,14 @@ class ShoppingCart extends Component {
     let order = {
       userId: authToken.userId,
       customerEmail: authToken.name,
-      orderItems: this.state.cartItems
+      orderItems: this.state.basket.items
     };
 
     this.axios.post(`${Config.Api.orderApiUrl}/api/order`, order, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((postResponse) => {
       let basket = this.state.basket;
       basket.items = [];
-      this.setState({basket: basket});
+      this.setState({basket: this.state.basket});
+
       this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${authToken.userId}`, this.state.basket , { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
         history.replace('/');
       }).catch((error) => {
