@@ -52,9 +52,15 @@ class App extends Component {
       this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}}).then((response) => {
         const existingBasket = response.data;
 
-        this.setState({cartItemCount: existingBasket.items.length});
+        let cartItemCount = 0;
 
-        for(let count = 0; count < existingBasket.items.length; count++) {
+        existingBasket.items.forEach((basketItem) => {
+          cartItemCount += basketItem.quantity;
+        });
+
+        this.setState({cartItemCount: cartItemCount});
+
+        for(let count = 0; count < cartItemCount; count++) {
           this.refs.header.incrementCartItemCount();
         }
       }).catch((error) => {

@@ -58,12 +58,23 @@ class Home extends Component {
     const quantityOrdering = 1;
 
     let basket = this.state.basket;
+    let itemExistsInBasket = false;
 
-    // TODO: if item is already in cart, increment its quantity then update
+    for(let counter = 0; counter < basket.items.length; counter++) {
+      let basketItem = basket.items[counter];
 
-    let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
+      if(basketItem.itemId === item.itemId) {
+        basketItem.quantity = basketItem.quantity + 1;
+        itemExistsInBasket = true;
+        break;
+      }
+    }
 
-    basket.items.push(newOrderItem);
+    if(!itemExistsInBasket) {
+      let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
+
+      basket.items.push(newOrderItem);
+    }
 
     this.setState({basket: basket});
 
