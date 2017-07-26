@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Config } from '../../config';
-import { Panel, Col, Row, Grid, Table } from 'react-bootstrap';
+import { Col, Row, Grid } from 'react-bootstrap';
+import OrderPanel from '../orderPanel/orderPanel';
 
 class Orders extends Component {
   constructor(props) {
@@ -18,27 +19,7 @@ class Orders extends Component {
         <Row>
           <Col md={10} mdOffset={1}>
             <h1>Order History</h1>
-            {this.state.orders.length > 0 &&
-              <div>
-                {this.state.orders.forEach((order) => {
-                  <Panel header={order.orderId}>
-                    <Table responsive>
-                      <thead><tr><th></th><th>Quantity</th><th>Price</th></tr></thead>
-                      <tbody>
-                        {order.orderItems.forEach((orderItem) => {
-                          <tr>
-                            <td>{orderItem.description}</td>
-                          </tr>
-                        })}
-                      </tbody>
-                    </Table>
-                  </Panel>
-                })}
-              </div>
-            }
-            {this.state.orders.length === 0 &&
-              <p>You have no orders.</p>
-            }
+            {this.getOrderPanels()}
           </Col>
         </Row>
       </Grid>
@@ -57,6 +38,18 @@ class Orders extends Component {
     }).catch((error) => {
       console.error(error);
     });
+  }
+
+  getOrderPanels() {
+    if(this.state.orders.length > 0) {
+      return this.state.orders.map((order) =>
+        <OrderPanel key={order.orderId} order={order} />
+      );
+    }
+
+    return (
+      <p>You have no orders.</p>
+    );
   }
 }
 

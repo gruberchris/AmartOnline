@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Image, Col, Row, Grid } from 'react-bootstrap';
 
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Grid fluid={true}>
