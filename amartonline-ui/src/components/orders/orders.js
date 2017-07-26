@@ -17,13 +17,18 @@ class Orders extends Component {
       <Grid fluid={true}>
         <Row>
           <Col md={10} mdOffset={1}>
-            <h1>My Orders:</h1>
-            <ListGroup>
-              {this.state.orders.map((order) => {
-                this.showOrder(order);
-                this.showOrderItems(order.orderItems);
-              })}
-            </ListGroup>
+            <h1>Order History</h1>
+            {this.state.orders.length > 0 &&
+              <ListGroup>
+                {this.state.orders.map((order) => {
+                  this.showOrder(order);
+                  this.showOrderItems(order.orderItems);
+                })}
+              </ListGroup>
+            }
+            {this.state.orders.length === 0 &&
+              <p>You have no orders.</p>
+            }
           </Col>
         </Row>
       </Grid>
