@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Config } from '../../config';
-import { Button, ListGroup, ListGroupItem, Glyphicon, Col, Row, Grid } from 'react-bootstrap';
+import { Button, ListGroup, ListGroupItem, Col, Row, Grid } from 'react-bootstrap';
 import history from '../../history';
 
 class ShoppingCart extends Component {
