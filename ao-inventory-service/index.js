@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(authCheck);
 app.use(cors());
 
-const mongoHostName = process.env.MONGO_HOST_NAME || 'localhost';
+const mongoHostName = process.env.MONGO_HOST_NAME || 'ao-mongo';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl);

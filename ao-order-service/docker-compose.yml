@@ -1,0 +1,18 @@
+version: '2'
+services:
+  ao-order-api:
+    build: .
+    ports:
+      - 5002:5002
+    volumes:
+      - .:/usr/src/app
+    links:
+      - ao-mongo
+    depends_on:
+      - ao-mongo
+  ao-mongo:
+    image: mongo:latest
+    container_name: "ao-order-mongo"
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null

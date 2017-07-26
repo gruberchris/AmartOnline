@@ -1,0 +1,18 @@
+version: '2'
+services:
+  ao-inventory-api:
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/src/app
+    links:
+      - ao-mongo
+    depends_on:
+      - ao-mongo
+  ao-mongo:
+    image: mongo:latest
+    container_name: "ao-inventory-mongo"
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null

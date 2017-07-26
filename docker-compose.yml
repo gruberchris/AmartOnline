@@ -1,0 +1,55 @@
+version: '2'
+services:
+  ao-ui:
+    build: ./amartonline-ui
+    ports:
+      - 3000:3000
+    volumes:
+      - ./amartonline-ui:/usr/src/app
+      - /usr/src/app/node_modules
+  ao-inventory-api:
+    build: ./ao-inventory-service
+    ports:
+      - 5000:5000
+    volumes:
+      - ./ao-inventory-service:/usr/src/app
+      - /usr/src/app/node_modules
+    links:
+      - ao-mongo
+    depends_on:
+      - ao-mongo
+  ao-basket-api:
+    build: ./ao-basket-service
+    ports:
+      - 5001:5001
+    volumes:
+      - ./ao-basket-service:/usr/src/app
+      - /usr/src/app/node_modules
+    links:
+      - ao-mongo
+    depends_on:
+      - ao-mongo
+  ao-order-api:
+    build: ./ao-order-service
+    ports:
+      - 5002:5002
+    volumes:
+      - ./ao-order-service:/usr/src/app
+      - /usr/src/app/node_modules
+    links:
+      - ao-mongo
+    depends_on:
+      - ao-mongo
+  ao-tax-api:
+    build: ./ao-tax-service
+    ports:
+      - 5003:5003
+    volumes:
+      - ./ao-tax-service:/usr/src/app
+      - /usr/src/app/node_modules
+  ao-mongo:
+    image: mongo:latest
+    container_name: "ao-mongo"
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null

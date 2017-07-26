@@ -6,12 +6,12 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install -p
+RUN npm install
 
 # Copy app source into app directory
 COPY . /usr/src/app
 
-EXPOSE 5000
+EXPOSE 5002
 
 # Run npm start to launch the api
 CMD ["npm", "start"]

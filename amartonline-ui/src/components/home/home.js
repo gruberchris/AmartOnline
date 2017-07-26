@@ -11,8 +11,8 @@ class Home extends Component {
       inventory:[],
       basket: {},
       isAuthenticated: this.props.auth.isAuthenticated(),
-      userId: this.props.auth.authToken.userId
-    }
+      userId: this.props.auth.authToken ? this.props.auth.authToken.userId : null
+    };
   }
 
   render() {

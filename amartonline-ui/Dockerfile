@@ -6,12 +6,15 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install
+RUN npm install -p
 
 # Copy app source into app directory
 COPY . /usr/src/app
 
-EXPOSE 5000
+# Build and optimize react app
+RUN npm run build
 
-# Run npm start to launch the api
-CMD ["npm", "start"]
+EXPOSE 3000
+
+# Run npm start to launch the app
+CMD ["npm", "start", "server"]
