@@ -24,7 +24,7 @@ class ShoppingCart extends Component {
       <Grid fluid={true}>
         <Row>
           <Col md={10} mdOffset={1}>
-            <h1>Shopping Cart:</h1>
+            <h1>Shopping Cart</h1>
             <ListGroup>{cartItemsList}</ListGroup>
           </Col>
         </Row>
@@ -59,14 +59,13 @@ class ShoppingCart extends Component {
 
   getCartItemsList() {
     if(this.state.basket.items.length > 0) {
-      const tempButtonContainer = {
-        display: "inline-block",
-        verticalAlign: "middle"
+      const listGroupItemContent = {
+        display: "inline-block"
       };
 
       const cartItemsList = this.state.basket.items.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
-          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4><span>{item.quantity}</span><span><strong>${item.price}</strong></span></div>
+          <div style={listGroupItemContent}><h4>{item.description}</h4><span><h4><strong>${item.price}</strong></h4></span><span>Quantity: {item.quantity}</span></div>
         </ListGroupItem>
       );
 
