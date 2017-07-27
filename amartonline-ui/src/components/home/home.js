@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Config } from '../../config';
 import { Button, ListGroup, ListGroupItem, Glyphicon, Col, Row, Grid } from 'react-bootstrap';
 
 class Home extends Component {
@@ -26,7 +25,7 @@ class Home extends Component {
           </Col>
         </Row>
       </Grid>
-    )
+    );
   }
 
   componentWillMount() {
@@ -38,7 +37,7 @@ class Home extends Component {
   }
 
   getItemsForSale() {
-    this.axios.get(`${Config.Api.inventoryApiUrl}/api/inventory`).then((response) => {
+    this.axios.get(`${this.props.config.Api.inventoryApiUrl}/api/inventory`).then((response) => {
       this.setState({ inventory: response.data });
     }).catch((error) => {
       console.error(error);
@@ -46,7 +45,7 @@ class Home extends Component {
   }
 
   getUserBasket(userId) {
-    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
+    this.axios.get(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
       this.setState({basket: response.data});
     }).catch((error) => {
       console.error(error);
@@ -78,7 +77,7 @@ class Home extends Component {
 
     this.setState({basket: basket});
 
-    this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
+    this.axios.put(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
       this.props.onAddCartItem();
     }).catch((error) => {
       console.error(error);

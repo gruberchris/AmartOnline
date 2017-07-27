@@ -16,7 +16,7 @@ class OrderPanel extends Component {
         </tbody>
       </Table>
     </Panel>
-    )
+    );
   }
 
   getOrderItemRow(orderItems) {

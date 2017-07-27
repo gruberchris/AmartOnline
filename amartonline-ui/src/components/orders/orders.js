@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Config } from '../../config';
 import { Col, Row, Grid } from 'react-bootstrap';
 import OrderPanel from '../orderPanel/orderPanel';
 
@@ -10,7 +9,7 @@ class Orders extends Component {
     this.axios = axios;
     this.state = {
       orders:[]
-    }
+    };
   }
 
   render() {
@@ -33,7 +32,7 @@ class Orders extends Component {
   getOrders() {
     const authToken = this.props.auth.authToken;
 
-    this.axios.get(`${Config.Api.orderApiUrl}/api/order/user/${authToken.userId}`, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
+    this.axios.get(`${this.props.config.Api.orderApiUrl}/api/order/user/${authToken.userId}`, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
       this.setState({orders: response.data});
     }).catch((error) => {
       console.error(error);

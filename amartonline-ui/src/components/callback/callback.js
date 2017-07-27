@@ -6,7 +6,7 @@ class Callback extends Component {
       <div>
         <p>Loading...</p>
       </div>
-    )
+    );
   }
 }
 

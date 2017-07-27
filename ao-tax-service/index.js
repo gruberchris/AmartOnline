@@ -5,6 +5,13 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const { Config } = require('./config');
 
+const config = Config;
+config.Auth.domain = process.env.AO_AUTH_DOMAIN || config.Auth.domain;
+config.Auth.audience = process.env.AO_AUTH_AUDIENCE || config.Auth.audience;
+
+console.log(`Auth0 domain set to ${config.Auth.domain}`);
+console.log(`Auth0 audience set to ${config.Auth.audience}`);
+
 const app = express();
 
 app.use(cors());
@@ -22,10 +29,10 @@ const authCheck = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
+    jwksUri: `https://${config.Auth.domain}/.well-known/jwks.json`
   }),
   audience: Config.Auth.audience,
-  issuer: `https://${Config.Auth.domain}/`,
+  issuer: `https://${config.Auth.domain}/`,
   algorithms: ['RS256']
 });
 

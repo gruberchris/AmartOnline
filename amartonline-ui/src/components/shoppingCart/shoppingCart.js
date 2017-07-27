@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Config } from '../../config';
 import { Button, ListGroup, ListGroupItem, Col, Row, Grid } from 'react-bootstrap';
 import history from '../../history';
 
@@ -50,7 +49,7 @@ class ShoppingCart extends Component {
       throw new Error('Unauthorized or no access token retrieved.');
     }
 
-    this.axios.get(`${Config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
+    this.axios.get(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
       this.setState({basket: response.data});
     }).catch((error) => {
       console.error(error);
@@ -84,12 +83,12 @@ class ShoppingCart extends Component {
       orderItems: this.state.basket.items
     };
 
-    this.axios.post(`${Config.Api.orderApiUrl}/api/order`, order, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((postResponse) => {
+    this.axios.post(`${this.props.config.Api.orderApiUrl}/api/order`, order, { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((postResponse) => {
       let basket = this.state.basket;
       basket.items = [];
       this.setState({basket: this.state.basket});
 
-      this.axios.put(`${Config.Api.basketApiUrl}/api/basket/${authToken.userId}`, this.state.basket , { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
+      this.axios.put(`${this.props.config.Api.basketApiUrl}/api/basket/${authToken.userId}`, this.state.basket , { headers: { Authorization: `Bearer ${authToken.accessToken}`}}).then((response) => {
         history.replace('/');
       }).catch((error) => {
         console.error(error);

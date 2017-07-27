@@ -8,16 +8,25 @@ const jwks = require('jwks-rsa');
 const InventoryItemModel = require('./models/inventoryItemModel');
 const { Config } = require('./config');
 
+mongoose.Promise = global.Promise;
+
+const config = Config;
+config.Auth.domain = process.env.AO_AUTH_DOMAIN || config.Auth.domain;
+config.Auth.audience = process.env.AO_AUTH_AUDIENCE || config.Auth.audience;
+
+console.log(`Auth0 domain set to ${config.Auth.domain}`);
+console.log(`Auth0 audience set to ${config.Auth.audience}`);
+
 const app = express();
 const authCheck = jwt({
   secret: jwks.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${Config.Auth.domain}/.well-known/jwks.json`
+    jwksUri: `https://${config.Auth.domain}/.well-known/jwks.json`
   }),
   audience: Config.Auth.audience,
-  issuer: `https://${Config.Auth.domain}/`,
+  issuer: `https://${config.Auth.domain}/`,
   algorithms: ['RS256']
 }).unless((request) => {
   // console.log(`Checking unless rules. Request path is: ${request.path} and method is ${request.method}`);
@@ -34,7 +43,7 @@ app.use(cors());
 const mongoHostName = process.env.MONGO_HOST_NAME || 'ao-mongo';
 const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
 
-mongoose.connect(mongoUrl);
+mongoose.connect(mongoUrl, { useMongoClient: true });
 
 let db = mongoose.connection;
 

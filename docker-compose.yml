@@ -2,6 +2,10 @@ version: '2'
 services:
   ao-ui:
     build: ./amartonline-ui
+    environment:
+      AO_AUTH_DOMAIN:
+      AO_AUTH_AUDIENCE:
+      AO_AUTH_CLIENTID:
     ports:
       - 3000:3000
     volumes:
@@ -9,6 +13,9 @@ services:
       - /usr/src/app/node_modules
   ao-inventory-api:
     build: ./ao-inventory-service
+    environment:
+      AO_AUTH_DOMAIN:
+      AO_AUTH_AUDIENCE:
     ports:
       - 5000:5000
     volumes:
@@ -20,6 +27,9 @@ services:
       - ao-mongo
   ao-basket-api:
     build: ./ao-basket-service
+    environment:
+      AO_AUTH_DOMAIN:
+      AO_AUTH_AUDIENCE:
     ports:
       - 5001:5001
     volumes:
@@ -31,6 +41,9 @@ services:
       - ao-mongo
   ao-order-api:
     build: ./ao-order-service
+    environment:
+      AO_AUTH_DOMAIN:
+      AO_AUTH_AUDIENCE:
     ports:
       - 5002:5002
     volumes:
@@ -42,6 +55,9 @@ services:
       - ao-mongo
   ao-tax-api:
     build: ./ao-tax-service
+    environment:
+      AO_AUTH_DOMAIN:
+      AO_AUTH_AUDIENCE:
     ports:
       - 5003:5003
     volumes:
