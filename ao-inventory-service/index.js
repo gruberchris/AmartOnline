@@ -56,7 +56,7 @@ db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
 });
 
-app.get('/api/inventory', authCheck, jwtAuthz(['readall:inventory']), (req, res) => {
+app.get('/api/inventory', (req, res) => {
   InventoryItemModel.find((error, inventoryItems) => {
     if(error) {
       res.status(500).send(error);
