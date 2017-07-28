@@ -1,6 +1,11 @@
 module.exports.Config = {
   Auth: {
     domain: '',
-    audience: ''
+    audience: '',
+    clientId: '',
+    clientSecret: '',
+    scope: '',
+    taxApiUri: '',
+    inventoryApiUri: ''
   }
 };

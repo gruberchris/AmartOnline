@@ -10,7 +10,7 @@ class Header extends Component {
     this.logout = this.logout.bind(this);
 
     this.state = {
-      cartItemCount: props.cartItemCount
+      cartItemCount: 0
     };
   }
 
@@ -51,6 +51,10 @@ class Header extends Component {
     }
   }
 
+  setCartItemCount(cartItemCount) {
+    this.setState({cartItemCount: cartItemCount});
+  }
+
   render() {
     const isAuthenticated  = this.props.auth.isAuthenticated();
 
@@ -70,11 +74,6 @@ class Header extends Component {
           <Navbar.Toggle/>
         </Navbar.Header>
         <Navbar.Collapse>
-          {/*<Nav>
-          <NavItem>Great Stuff</NavItem>
-          <NavItem>Even Better Stuff!</NavItem>
-          {isAuthenticated() && (<NavItem onClick={this.logout}>Sign Out</NavItem>)}
-        </Nav>*/}
         <Nav pullRight>
           {!isAuthenticated && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
           {isAuthenticated && (

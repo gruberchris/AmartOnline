@@ -8,7 +8,6 @@ class Home extends Component {
     this.axios = axios;
     this.state = {
       inventory:[],
-      basket: {},
       isAuthenticated: this.props.auth.isAuthenticated(),
       userId: this.props.auth.authToken ? this.props.auth.authToken.userId : null
     };
@@ -32,21 +31,13 @@ class Home extends Component {
     this.getItemsForSale();
 
     if(this.state.isAuthenticated) {
-      this.getUserBasket(this.state.userId);
+      this.getUserBasketOrCreate();
     }
   }
 
   getItemsForSale() {
     this.axios.get(`${this.props.config.Api.inventoryApiUrl}/api/inventory`).then((response) => {
       this.setState({ inventory: response.data });
-    }).catch((error) => {
-      console.error(error);
-    });
-  }
-
-  getUserBasket(userId) {
-    this.axios.get(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((response) => {
-      this.setState({basket: response.data});
     }).catch((error) => {
       console.error(error);
     });
@@ -71,7 +62,6 @@ class Home extends Component {
 
     if(!itemExistsInBasket) {
       let newOrderItem = { itemId: item.itemId, description: item.description, quantity: quantityOrdering, price: item.price };
-
       basket.items.push(newOrderItem);
     }
 
@@ -112,6 +102,49 @@ class Home extends Component {
     }
 
     return null;
+  }
+
+  getUserBasketOrCreate() {
+    const auth = this.props.auth;
+
+    if(!this.state.basket && auth.isAuthenticated()) {
+      this.axios.get(`${this.props.config.Api.basketApiUrl}/api/basket/${this.state.userId}`, { headers: { Authorization: `Bearer ${auth.getAccessToken()}`}})
+        .then(this.onGetUserBasket.bind(this))
+        .catch(this.onGetUserBasketError.bind(this));
+    }
+  }
+
+  onGetUserBasket(response) {
+    const existingBasket = response.data;
+
+    let cartItemCount = 0;
+
+    existingBasket.items.forEach((basketItem) => {
+      cartItemCount += basketItem.quantity;
+    });
+
+    this.setState({basket: existingBasket});
+    this.props.onSetCartItemCount(cartItemCount);
+
+    console.log(`Retrieved existing user basket.`);
+    console.debug(existingBasket);
+  }
+
+  onGetUserBasketError(error) {
+    if (error.response && error.response.status === 404) {
+      this.axios.post(`${this.props.config.Api.basketApiUrl}/api/basket`, {
+        userId: this.state.userId,
+        items: []
+      }, {headers: {Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
+        //this.setState({cartItemCount: 0});
+        this.setState({basket: {items: []}});
+        console.log(`Created a new user basket.`);
+      }).catch((error) => {
+        console.error(error);
+      });
+    } else {
+      console.error(error);
+    }
   }
 }
 

@@ -7,7 +7,7 @@ class ShoppingCart extends Component {
   constructor(props) {
     super(props);
     this.axios = axios;
-    this.state = { basket:{ items: [] } };
+    this.state = { basket: { items: [] } };
   }
 
   render() {

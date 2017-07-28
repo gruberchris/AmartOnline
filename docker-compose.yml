@@ -44,6 +44,11 @@ services:
     environment:
       AO_AUTH_DOMAIN:
       AO_AUTH_AUDIENCE:
+      AO_AUTH_CLIENTID:
+      AO_AUTH_CLIENTSECRET:
+      AO_AUTH_SCOPE: read:tax edit:inventory
+      AO_AUTH_TAXAPIURI: ao-tax-api:5003
+      AO_AUTH_INVENTORYAPIURI: ao-inventory-api:5000
     ports:
       - 5002:5002
     volumes:
@@ -51,8 +56,12 @@ services:
       - /usr/src/app/node_modules
     links:
       - ao-mongo
+      - ao-tax-api
+      - ao-inventory-api
     depends_on:
       - ao-mongo
+      - ao-tax-api
+      - ao-inventory-api
   ao-tax-api:
     build: ./ao-tax-service
     environment:
