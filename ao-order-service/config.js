@@ -4,8 +4,10 @@ module.exports.Config = {
     audience: '',
     clientId: '',
     clientSecret: '',
-    scope: '',
     taxApiUri: '',
     inventoryApiUri: ''
+  },
+  Mongo: {
+    host: ''
   }
 };

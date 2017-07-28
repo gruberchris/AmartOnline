@@ -21,6 +21,7 @@ config.Auth.clientSecret = process.env.AO_AUTH_CLIENTSECRET || config.Auth.clien
 config.Auth.scope = process.env.AO_AUTH_SCOPE || config.Auth.scope;
 config.Auth.taxApiUri = process.env.AO_AUTH_TAXAPIURI || config.Auth.taxApiUri;
 config.Auth.inventoryApiUri = process.env.AO_AUTH_INVENTORYAPIURI || config.Auth.inventoryApiUri;
+config.Mongo.host = process.env.AO_MONGO_HOST || config.Mongo.host;
 
 console.log(`Auth0 domain set to ${config.Auth.domain}`);
 console.log(`Auth0 audience set to ${config.Auth.audience}`);
@@ -29,6 +30,7 @@ console.log(`Auth0 client secret set to ${config.Auth.clientSecret}`);
 console.log(`Auth0 scope set to ${config.Auth.scope}`);
 console.log(`Auth0 taxapiuri set to ${config.Auth.taxApiUri}`);
 console.log(`Auth0 inventoryapiuri set to ${config.Auth.inventoryApiUri}`);
+console.log(`Mongo host set to ${config.Mongo.host}`);
 
 const app = express();
 
@@ -48,8 +50,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const mongoHostName = process.env.MONGO_HOST_NAME || 'ao-mongo';
-const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
+const mongoUrl = `mongodb://${config.Mongo.host}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl, { useMongoClient: true });
 
@@ -116,12 +117,10 @@ app.post('/api/order', authCheck, jwtAuthz(['create:order']), (req, res) => {
   });
 
   nicHelper.getAccessToken(config.Auth.audience).then((accessToken) => {
-    const taxApiUri = `http://${config.Auth.taxApiUri}`;
-
     // TODO: Read this from user profile or identity token
     const tempTaxState = 'MN';
 
-    axios.get(`${taxApiUri}/api/tax/${tempTaxState}`, { headers: { Authorization: `Bearer ${accessToken}`}}).then((taxResult) => {
+    axios.get(`${config.Auth.taxApiUri}/api/tax/${tempTaxState}`, { headers: { Authorization: `Bearer ${accessToken}`}}).then((taxResult) => {
       order.totalTax = order.subtotal * (taxResult.data.rate / 100);
       order.total = order.subtotal + order.totalTax;
 

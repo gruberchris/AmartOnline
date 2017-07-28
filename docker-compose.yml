@@ -47,8 +47,9 @@ services:
       AO_AUTH_CLIENTID:
       AO_AUTH_CLIENTSECRET:
       AO_AUTH_SCOPE: read:tax edit:inventory
-      AO_AUTH_TAXAPIURI: ao-tax-api:5003
-      AO_AUTH_INVENTORYAPIURI: ao-inventory-api:5000
+      AO_AUTH_TAXAPIURI: http://ao-tax-api:5003
+      AO_AUTH_INVENTORYAPIURI: http://ao-inventory-api:5000
+      AO_MONGO_HOST: ao-mongo
     ports:
       - 5002:5002
     volumes:
