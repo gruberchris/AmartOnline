@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
+const jwtAuthz = require('express-jwt-authz');
+
 const { Config } = require('./config');
 
 const config = Config;
@@ -38,11 +40,11 @@ const authCheck = jwt({
 
 app.use(authCheck);
 
-app.get('/api/tax', (req, res) => {
+app.get('/api/tax', authCheck, jwtAuthz(['readall:tax']), (req, res) => {
   res.send(stateTaxRates);
 });
 
-app.get('/api/tax/:state', (req, res) => {
+app.get('/api/tax/:state', authCheck, jwtAuthz(['read:tax']), (req, res) => {
   let state = req.params.state.toUpperCase();
 
   let stateTaxModel = stateTaxRates[state];

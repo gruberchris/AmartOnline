@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
+const jwtAuthz = require('express-jwt-authz');
 const InventoryItemModel = require('./models/inventoryItemModel');
 const { Config } = require('./config');
 
@@ -32,16 +33,14 @@ const authCheck = jwt({
   issuer: `https://${config.Auth.domain}/`,
   algorithms: ['RS256']
 }).unless((request) => {
-  // console.log(`Checking unless rules. Request path is: ${request.path} and method is ${request.method}`);
   if(request.path === '/api/inventory' && request.method === 'GET') {
     return true;
   }
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(authCheck);
-app.use(cors());
 
 const mongoUrl = `mongodb://${config.Mongo.host}:27017/AmartOnline`;
 
@@ -57,7 +56,7 @@ db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
 });
 
-app.get('/api/inventory', (req, res) => {
+app.get('/api/inventory', authCheck, jwtAuthz(['readall:inventory']), (req, res) => {
   InventoryItemModel.find((error, inventoryItems) => {
     if(error) {
       res.status(500).send(error);
@@ -67,7 +66,7 @@ app.get('/api/inventory', (req, res) => {
   });
 });
 
-app.get('/api/inventory/:itemId', (req, res) => {
+app.get('/api/inventory/:itemId', authCheck, jwtAuthz(['read:inventory']), (req, res) => {
   let itemId = req.params.itemId;
 
   InventoryItemModel.findOne({itemId: itemId}, (error, inventoryItem) => {
@@ -83,7 +82,7 @@ app.get('/api/inventory/:itemId', (req, res) => {
   });
 });
 
-app.post('/api/inventory', (req, res) => {
+app.post('/api/inventory', authCheck, jwtAuthz(['create:inventory']), (req, res) => {
   InventoryItemModel.createInventoryItem(req.body, (error, inventoryItem) => {
     if(error) {
       res.status(500).send(error);
@@ -93,7 +92,7 @@ app.post('/api/inventory', (req, res) => {
   });
 });
 
-app.put('/api/inventory/:itemId', (req, res) => {
+app.put('/api/inventory/:itemId', authCheck, jwtAuthz(['edit:inventory']), (req, res) => {
   let inventoryItem = req.body;
 
   InventoryItemModel.findOneAndUpdate({itemId: inventoryItem.itemId}, inventoryItem, null, (error, doc) => {
@@ -105,7 +104,7 @@ app.put('/api/inventory/:itemId', (req, res) => {
   });
 });
 
-app.delete('/api/inventory/:itemId', (req, res) => {
+app.delete('/api/inventory/:itemId', authCheck, jwtAuthz(['delete:inventory']), (req, res) => {
   let itemId = req.params.itemId;
 
   InventoryItemModel.findOneAndRemove({itemId: itemId}, (error) => {

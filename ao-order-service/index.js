@@ -46,9 +46,9 @@ const authCheck = jwt({
   algorithms: ['RS256']
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
 const mongoUrl = `mongodb://${config.Mongo.host}:27017/AmartOnline`;
 
@@ -66,7 +66,7 @@ db.once('open', () => {
 
 const nicHelper = new NicHelper(config.Auth.domain, config.Auth.clientId, config.Auth.clientSecret);
 
-app.get('/api/order', (req, res) => {
+app.get('/api/order', authCheck, jwtAuthz(['readall:order']), (req, res) => {
   OrderModel.find((error, orders) => {
     if(error) {
       res.status(500).send(error);
@@ -76,7 +76,7 @@ app.get('/api/order', (req, res) => {
   });
 });
 
-app.get('/api/order/user/:userId', (req, res) => {
+app.get('/api/order/user/:userId', authCheck, jwtAuthz(['read:order']), (req, res) => {
   let userId = req.params.userId;
 
   OrderModel.find({userId: userId}, (error, orders) => {
@@ -88,7 +88,7 @@ app.get('/api/order/user/:userId', (req, res) => {
   });
 });
 
-app.get('/api/order/:orderId', (req, res) => {
+app.get('/api/order/:orderId', authCheck, jwtAuthz(['read:order']), (req, res) => {
   let orderId = req.params.orderId;
 
   OrderModel.findOne({orderId: orderId}, (error, order) => {

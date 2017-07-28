@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
+const jwtAuthz = require('express-jwt-authz');
 const BasketModel = require('./models/basketModel');
 const { Config } = require('./config');
 
@@ -33,10 +34,9 @@ const authCheck = jwt({
   algorithms: ['RS256']
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-app.use(authCheck);
 
 const mongoUrl = `mongodb://${config.Mongo.host}:27017/AmartOnline`;
 
@@ -52,7 +52,7 @@ db.once('open', () => {
   console.log(`Successfully connected to mongodb server: ${mongoUrl}`);
 });
 
-app.get('/api/basket', (req, res) => {
+app.get('/api/basket', authCheck, jwtAuthz(['readall:basket']), (req, res) => {
   BasketModel.find((error, baskets) => {
     if(error) {
       res.status(500).send(error);
@@ -62,7 +62,7 @@ app.get('/api/basket', (req, res) => {
   });
 });
 
-app.get('/api/basket/:userId', (req, res) => {
+app.get('/api/basket/:userId', authCheck, jwtAuthz(['read:basket']), (req, res) => {
   let userId = req.params.userId;
 
   BasketModel.findOne({userId: userId}, (error, basket) => {
@@ -78,7 +78,7 @@ app.get('/api/basket/:userId', (req, res) => {
   });
 });
 
-app.post('/api/basket', (req, res) => {
+app.post('/api/basket', authCheck, jwtAuthz(['create:basket']), (req, res) => {
   BasketModel.createBasket(req.body, (error, basket) => {
     if(error) {
       res.status(500).send(error);
@@ -88,7 +88,7 @@ app.post('/api/basket', (req, res) => {
   });
 });
 
-app.put('/api/basket/:userId', (req, res) => {
+app.put('/api/basket/:userId', authCheck, jwtAuthz(['edit:basket']), (req, res) => {
   let basket = req.body;
 
   BasketModel.findOneAndUpdate({userId: basket.userId}, basket, null, (error, doc) => {
@@ -100,7 +100,7 @@ app.put('/api/basket/:userId', (req, res) => {
   });
 });
 
-app.delete('/api/basket/:userId', (req, res) => {
+app.delete('/api/basket/:userId', authCheck, jwtAuthz(['delete:basket']), (req, res) => {
   let userId = req.params.userId;
 
   BasketModel.findOneAndRemove({userId: userId}, (error) => {
