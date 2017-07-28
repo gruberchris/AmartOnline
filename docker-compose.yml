@@ -16,6 +16,7 @@ services:
     environment:
       AO_AUTH_DOMAIN:
       AO_AUTH_AUDIENCE:
+      AO_MONGO_HOST: ao-mongo
     ports:
       - 5000:5000
     volumes:
@@ -30,6 +31,7 @@ services:
     environment:
       AO_AUTH_DOMAIN:
       AO_AUTH_AUDIENCE:
+      AO_MONGO_HOST: ao-mongo
     ports:
       - 5001:5001
     volumes:

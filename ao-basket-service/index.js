@@ -13,11 +13,14 @@ mongoose.Promise = global.Promise;
 const config = Config;
 config.Auth.domain = process.env.AO_AUTH_DOMAIN || config.Auth.domain;
 config.Auth.audience = process.env.AO_AUTH_AUDIENCE || config.Auth.audience;
+config.Mongo.host = process.env.AO_MONGO_HOST || config.Mongo.host;
 
 console.log(`Auth0 domain set to ${config.Auth.domain}`);
 console.log(`Auth0 audience set to ${config.Auth.audience}`);
+console.log(`Mongo host set to ${config.Mongo.host}`);
 
 const app = express();
+
 const authCheck = jwt({
   secret: jwks.expressJwtSecret({
     cache: true,
@@ -35,8 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(authCheck);
 
-const mongoHostName = process.env.MONGO_HOST_NAME || 'ao-mongo';
-const mongoUrl = `mongodb://${mongoHostName}:27017/AmartOnline`;
+const mongoUrl = `mongodb://${config.Mongo.host}:27017/AmartOnline`;
 
 mongoose.connect(mongoUrl, { useMongoClient: true });
 
