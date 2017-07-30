@@ -19,7 +19,7 @@ class Home extends Component {
     return (
       <Grid fluid={true}>
         <Row>
-          <Col md={10} mdOffset={1}>
+          <Col md={8} mdOffset={2}>
             <ListGroup>{itemsList}</ListGroup>
           </Col>
         </Row>
@@ -90,7 +90,7 @@ class Home extends Component {
       const itemsList = this.state.inventory.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
           <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
-          <div style={tempButtonContainer2}>
+          <div style={tempButtonContainer2} className="pull-right">
             {this.props.auth.isAuthenticated() &&
             <Button onClick={this.addItemToShoppingCart.bind(this, item)} bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button>
             }

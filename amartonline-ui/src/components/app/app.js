@@ -25,7 +25,7 @@ class App extends Component {
             this.props.auth.onAuthCallback(props);
             return <Callback {...props} />;
           }} />
-          <Route exact path="/cart" render={(props) => <ShoppingCart config={this.props.config} auth={this.props.auth} onRemoveCartItem={() => {this.refs.header.decrementCartItemCount();}} {...props}/>} />
+          <Route exact path="/cart" render={(props) => <ShoppingCart config={this.props.config} auth={this.props.auth} onRemoveCartItem={() => this.refs.header.decrementCartItemCount()} {...props}/>} />
           <Route exact path="/orders" render={(props) => <Orders config={this.props.config} auth={this.props.auth} {...props}/>} />
           <Route exact path="/profile" render={(props) => <UserProfile config={this.props.config} auth={this.props.auth} {...props}/>} />
         </Switch>
