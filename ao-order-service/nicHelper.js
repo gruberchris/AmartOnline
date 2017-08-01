@@ -1,4 +1,5 @@
 const axios = require('axios');
+const decode = require('jwt-decode');
 
 class NicHelper {
   constructor(domain, clientId, clientSecret) {
@@ -16,9 +17,24 @@ class NicHelper {
 
     return new Promise((resolve, reject) => {
       if(this.accessToken) {
-        // TODO: && new Date().getTime() < (this.expiresIn - 10)
-        //console.log(`Still have a auth token in memory that has not expired: ${this.accessToken}`);
-        return resolve(this.accessToken);
+        const getTokenExpirationDate = (token) => {
+          if(!token) {
+            return null;
+          }
+
+          const decodedAccessToken = decode(token);
+          let tokenExpirationDate = new Date(decodedAccessToken.exp * 1000);
+          tokenExpirationDate.setSeconds(tokenExpirationDate.getSeconds() - 30);
+
+          return tokenExpirationDate;
+        };
+
+        if(new Date().getTime() < getTokenExpirationDate(this.accessToken)) {
+          console.log('Found a cached token that has not expired.');
+          return resolve(this.accessToken);
+        }
+
+        console.log('Token expired. Getting a new access token.');
       }
 
       const requestBody = this.clientCredentialsRequestBody;
@@ -26,9 +42,6 @@ class NicHelper {
       axios.post(`https://${this.domain}/oauth/token`, requestBody).then((response) => {
         this.accessToken = response.data.access_token;
         this.expiresIn = response.data.expires_in;
-        //console.log(response.data);
-        //console.log(`Access Token Received: ${this.accessToken}`);
-        //console.log(`Access Token Expires: ${this.expiresIn}`);
         return resolve(response.data.access_token);
       }).catch((error) => {
         return reject(error);
