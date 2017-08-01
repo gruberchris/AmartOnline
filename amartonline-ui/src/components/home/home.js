@@ -67,7 +67,8 @@ class Home extends Component {
 
     this.setState({basket: basket});
 
-    this.axios.put(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
+    this.axios.put(`${this.props.config.Api.basketApiUrl}/api/basket/${userId}`, this.state.basket, { headers: { Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
+      console.debug(`Saving item to basket api: ${JSON.stringify(item)}`);
       this.props.onAddCartItem();
     }).catch((error) => {
       console.error(error);
@@ -126,8 +127,7 @@ class Home extends Component {
     this.setState({basket: existingBasket});
     this.props.onSetCartItemCount(cartItemCount);
 
-    console.log(`Retrieved existing user basket.`);
-    console.debug(existingBasket);
+    console.debug(`Retrieved existing user basket: ${JSON.stringify(existingBasket)}`);
   }
 
   onGetUserBasketError(error) {
@@ -136,9 +136,8 @@ class Home extends Component {
         userId: this.state.userId,
         items: []
       }, {headers: {Authorization: `Bearer ${this.props.auth.getAccessToken()}`}}).then((postResponse) => {
-        //this.setState({cartItemCount: 0});
-        this.setState({basket: {items: []}});
-        console.log(`Created a new user basket.`);
+        this.setState({basket: postResponse.data});
+        console.debug(`New basket created for userId ${this.state.userId} : ${JSON.stringify(postResponse.data)}`);
       }).catch((error) => {
         console.error(error);
       });

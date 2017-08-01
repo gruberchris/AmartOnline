@@ -111,10 +111,16 @@ app.post('/api/order', authCheck, jwtAuthz(['create:order']), (req, res) => {
   order.subtotal = 0;
   order.totalTax = 0;
 
+  const roundToCurrency = (currencyValue) => {
+    return +currencyValue.toFixed(2);
+  };
+
   order.orderItems.forEach((item) => {
     order.itemQuantity += item.quantity;
     order.subtotal += item.quantity * item.price;
   });
+
+  order.subtotal = roundToCurrency(order.subtotal);
 
   nicHelper.getAccessToken(config.Auth.audience).then((accessToken) => {
     // TODO: Read this from user profile or identity token
@@ -122,7 +128,9 @@ app.post('/api/order', authCheck, jwtAuthz(['create:order']), (req, res) => {
 
     axios.get(`${config.Auth.taxApiUri}/api/tax/${tempTaxState}`, { headers: { Authorization: `Bearer ${accessToken}`}}).then((taxResult) => {
       order.totalTax = order.subtotal * (taxResult.data.rate / 100);
+      order.totalTax = roundToCurrency(order.totalTax);
       order.total = order.subtotal + order.totalTax;
+      order.total = roundToCurrency(order.total);
 
       console.log(`Tax rate for ${taxResult.data.state} is ${taxResult.data.rate}%`);
       console.log(`Tax on a purchase of ${order.subtotal} is ${order.totalTax}`);
