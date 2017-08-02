@@ -7,10 +7,16 @@ class OrderPanel extends Component {
 
     const orderItemRowList = this.getOrderItemRow(order.orderItems);
 
+    const panelFooter = (
+      <div>
+        <span>Tax ${order.totalTax}</span>&nbsp;<span><strong>Total ${order.total}</strong></span>
+      </div>
+    );
+
     return (
-    <Panel header={order.orderId}>
+    <Panel header={order.orderId} footer={panelFooter}>
       <Table responsive>
-        <thead><tr><th></th><th>Quantity</th><th>Price</th></tr></thead>
+        <thead><tr><th></th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr></thead>
         <tbody>
         {orderItemRowList}
         </tbody>
@@ -25,6 +31,7 @@ class OrderPanel extends Component {
         <td>{orderItem.description}</td>
         <td>{orderItem.quantity}</td>
         <td>${orderItem.price}</td>
+        <td>${(orderItem.quantity * orderItem.price).toFixed(2)}</td>
       </tr>
     );
 

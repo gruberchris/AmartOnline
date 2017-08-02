@@ -77,15 +77,12 @@ class Header extends Component {
         <Nav pullRight>
           {!isAuthenticated && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
           {isAuthenticated && (
-          <NavDropdown id="navUserDropdown" title="Settings">
+          <NavDropdown id="navUserDropdown" title={<span>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></span>}>
             <LinkContainer to="/profile"><MenuItem>Profile</MenuItem></LinkContainer>
             <LinkContainer to="/orders"><MenuItem>Orders</MenuItem></LinkContainer>
             <MenuItem divider />
             <MenuItem onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>)}
-          {isAuthenticated && (
-            <LinkContainer to="/profile"><NavItem>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></NavItem></LinkContainer>
-          )}
           {(isAuthenticated && this.state.cartItemCount > 0) && (
             <LinkContainer to="/cart"><NavItem><Button bsStyle="primary"><Glyphicon glyph="shopping-cart"/><Badge>{this.state.cartItemCount}</Badge></Button></NavItem></LinkContainer>
           )}
