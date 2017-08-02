@@ -58,7 +58,7 @@ class Header extends Component {
   render() {
     const isAuthenticated  = this.props.auth.isAuthenticated();
 
-    const tempProfileImageStyle = {
+    const profileImageStyle = {
       maxHeight: '30px',
       width: 'auto',
       verticalAlign: 'middle',

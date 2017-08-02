@@ -77,12 +77,12 @@ class Home extends Component {
 
   getInventoryItemsList() {
     if(this.state.inventory.length > 0) {
-      const tempButtonContainer = {
+      const itemDescriptionStyles = {
         display: "inline-block",
         verticalAlign: "middle"
       };
 
-      const tempButtonContainer2 = {
+      const addToCartStyles = {
         display: "inline-block",
         verticalAlign: "middle",
         marginLeft: "50px"
@@ -90,8 +90,8 @@ class Home extends Component {
 
       const itemsList = this.state.inventory.map((item) =>
         <ListGroupItem key={item.itemId.toString()}>
-          <div style={tempButtonContainer}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
-          <div style={tempButtonContainer2} className="pull-right">
+          <div style={itemDescriptionStyles}><h4><strong>{item.description}</strong></h4>Only {item.quantity} left on hand. This can be yours for the every day low price of only <strong>${item.price}</strong></div>
+          <div style={addToCartStyles} className="pull-right">
             {this.props.auth.isAuthenticated() &&
             <Button onClick={this.addItemToShoppingCart.bind(this, item)} bsStyle="primary" bsSize="large"><Glyphicon glyph="plus-sign"/>Add To Cart</Button>
             }
