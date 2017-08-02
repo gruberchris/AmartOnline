@@ -7,14 +7,18 @@ class OrderPanel extends Component {
 
     const orderItemRowList = this.getOrderItemRow(order.orderItems);
 
+    const totalStyles = {
+      marginLeft: "5%"
+    };
+
     const panelFooter = (
-      <div>
-        <span>Tax ${order.totalTax}</span>&nbsp;<span><strong>Total ${order.total}</strong></span>
+      <div className="text-center">
+        <span>Tax ${order.totalTax}</span><span style={totalStyles}><strong>Total ${order.total}</strong></span>
       </div>
     );
 
     return (
-    <Panel header={order.orderId} footer={panelFooter}>
+    <Panel header={<div>Order #{order.orderId}</div>} footer={panelFooter}>
       <Table responsive>
         <thead><tr><th></th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr></thead>
         <tbody>

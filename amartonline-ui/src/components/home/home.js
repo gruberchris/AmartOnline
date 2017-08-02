@@ -85,7 +85,7 @@ class Home extends Component {
       const addToCartStyles = {
         display: "inline-block",
         verticalAlign: "middle",
-        marginLeft: "50px"
+        marginLeft: "5%"
       };
 
       const itemsList = this.state.inventory.map((item) =>
