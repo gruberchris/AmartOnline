@@ -77,7 +77,7 @@ class Header extends Component {
         <Nav pullRight>
           {!isAuthenticated && (<NavItem onClick={this.login}>Sign In or Register</NavItem>)}
           {isAuthenticated && (
-          <NavDropdown id="navUserDropdown" title={<span>Hello, {this.userName}<Image style={tempProfileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></span>}>
+          <NavDropdown id="navUserDropdown" title={<span>Hello, {this.userName}<Image style={profileImageStyle} src={this.userPicture} className="navbar-profile-image" alt="" rounded /></span>}>
             <LinkContainer to="/profile"><MenuItem>Profile</MenuItem></LinkContainer>
             <LinkContainer to="/orders"><MenuItem>Orders</MenuItem></LinkContainer>
             <MenuItem divider />
