@@ -1,2 +1,2 @@
 # AmartOnline
-A token based authentication demonstration using Auth0, React, Node and micro-service architecture
+An Auth0 token based authentication and authorization demonstration using React, Node and Microservice architecture.
