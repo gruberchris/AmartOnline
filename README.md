@@ -16,3 +16,17 @@ and **./AmartOnline/docker-compose.yml** files and add in your Auth0 client ids,
 the SPA client and APIs in this demonstration.
 
 2. Next, simple go to a terminal window and from the ./AmartOnline folder, execute the following command: **"docker-compose up"**.
+
+## Bulk Insert Inventory
+
+To help quickly load inventory data for a demonstration, there is a "bulk load" endpoint in the Inventory Api. An example
+POST to this endpoint might look like this:
+
+```
+curl -X POST http://localhost:5000/api/inventory/bulk 
+      -H 'content-type: application/json' 
+      -H 'authorization: Bearer <ACCESS-TOKEN-GOES-HERE>' 
+      -d '{"inventory": [{"itemId":"1", "description":"Star Wars B-Wing Fighter", "price": "23.49", "quantity":"100"}, 
+          {"itemId":"2", "description":"Star Wars X-Wing Fighter", "price": "27.99", "quantity":"49"}, 
+          {"itemId":"3", "description":"Star Wars Y-Wing Fighter", "price": "25.49", "quantity":"89"}]}'
+```

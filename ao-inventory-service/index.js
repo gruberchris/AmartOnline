@@ -92,6 +92,22 @@ app.post('/api/inventory', authCheck, jwtAuthz(['create:inventory']), (req, res)
   });
 });
 
+app.post('/api/inventory/bulk', authCheck, jwtAuthz(['create:inventory']), (req, res) => {
+  if(!req.body.inventory) {
+    res.status(400).send(req.body);
+  }
+
+  let inventoryList = req.body.inventory;
+
+  try {
+    insertResult = InventoryItemModel.insertMany(inventoryList);
+  } catch(error) {
+    res.status(500).send(error);
+  }
+
+  res.status(200).send(inventoryList);
+});
+
 app.put('/api/inventory/:itemId', authCheck, jwtAuthz(['edit:inventory']), (req, res) => {
   let inventoryItem = req.body;
 
