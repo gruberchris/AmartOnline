@@ -1,9 +1,9 @@
 # AmartOnline
-AmartOnline is a demo project designed as simple, practical example of JSON Web Token (JWT) based authentication and 
-authorization, based on Auth0. While Auth0 supports a wide variety of application frameworks, this demonstration project
-is using NodeJS, Express and Mongo for it's microservice APIs and React for its single page application (SPA) client.
+AmartOnline is a demo project designed as simple, practical example of __JSON Web Token (JWT)__ based authentication and 
+authorization, based on __Auth0__. While Auth0 supports a wide variety of application frameworks, this demonstration project
+is using __NodeJS, Express and Mongo__ for it's __microservice__ APIs and __React__ for its single page application (SPA) client.
 All projects in this demonstration have dockerfiles configured and there is a docker-compose script to orchestrate
-installing and executing all docker containers required to run this demonstration.
+installing and executing all __Docker__ containers required to run this demonstration.
 
 As this is designed to be a demonstration project to be presented, it is not designed to run in production environments,
 nor is it an example of production quality work. It is designed to be ran on a presenters laptop where Docker is
